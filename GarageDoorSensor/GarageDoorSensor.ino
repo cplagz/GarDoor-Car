@@ -14,6 +14,8 @@
   - Where this code was forked from https://github.com/DotNetDann/ESP-MQTT-GarageDoorSensor
 */
 
+//1.9R Change to use for a single roller door  (Author: SmbKiwi)
+
 // 1.8 Change pins and small clean
 // 1.7 Add ability to only close garage doors
 // 1.6 Add diagnose infomation on distances
@@ -23,7 +25,7 @@
 // ------------------------------
 // ---- all config in auth.h ----
 // ------------------------------
-#define VERSION F("v1.8 - GarDoor - https://github.com/DotNetDann - http://dotnetdan.info")
+#define VERSION F("v1.9R - GarRollDoor - https://github.com/SmbKiwi")
 
 #include <ArduinoJson.h> // Benoit Blanchon
 #include <ESP8266WiFi.h>
@@ -38,8 +40,9 @@
 
 #define DOOR_UNKNOWN         0x00
 #define DOOR_OPENED          0x01
-#define DOOR_CLOSEDNOCAR     0x02
-#define DOOR_CLOSEDWITHCAR   0x03
+#define DOOR_CLOSED          0x02
+#define NO_CAR               0x03
+#define YES_CAR              0x04
 #define SONAR_NUM 3      // Number of sensors.
 
 
