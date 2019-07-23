@@ -117,10 +117,10 @@ void setup() {
   pinMode(DOOR1_RELAY_PIN, OUTPUT);
   digitalWrite(DOOR1_RELAY_PIN, HIGH);
 
-  #if DOOR2_ENABLED == true
-    pinMode(DOOR2_RELAY_PIN, OUTPUT);
-    digitalWrite(DOOR2_RELAY_PIN, HIGH);
-  #endif
+  //#if DOOR2_ENABLED == true
+  //  pinMode(DOOR2_RELAY_PIN, OUTPUT);
+  //  digitalWrite(DOOR2_RELAY_PIN, HIGH);
+  //#endif
 
   //#if DOOR3_ENABLED == true
   //  pinMode(DOOR3_RELAY_PIN, OUTPUT);
