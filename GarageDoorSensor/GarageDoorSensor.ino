@@ -14,7 +14,7 @@
   - Where this code was forked from https://github.com/DotNetDann/ESP-MQTT-GarageDoorSensor
 */
 
-//1.9R Change to use for a single roller door  (Author: SmbKiwi)
+//1.9R Change to use for a single roller door with car detection using 2 ultrasonic sensors (Author: SmbKiwi)
 
 // 1.8 Change pins and small clean
 // 1.7 Add ability to only close garage doors
@@ -41,9 +41,10 @@
 #define DOOR_UNKNOWN         0x00
 #define DOOR_OPENED          0x01
 #define DOOR_CLOSED          0x02
-#define NO_CAR               0x03
-#define YES_CAR              0x04
-#define SONAR_NUM 3      // Number of sensors.
+#define CAR_NO               0x03
+#define CAR_YES              0x04
+#define CAR_UNKNOWN          0x05
+#define SONAR_NUM 2      // Number of sensors.
 
 
 /**************************************** GLOBALS ***************************************/
@@ -53,10 +54,10 @@ const int BUFFER_SIZE = JSON_OBJECT_SIZE(10);
 const int door_numValues = 10;
 int door1_lastDistanceValues[door_numValues];
 int door2_lastDistanceValues[door_numValues];
-int door3_lastDistanceValues[door_numValues];
+// int door3_lastDistanceValues[door_numValues];
 int door1_lastDistanceValue = 0;
 int door2_lastDistanceValue = 0;
-int door3_lastDistanceValue = 0;
+// #int door3_lastDistanceValue = 0;
 
 char* birthMessage = "online";
 const char* lwtMessage = "offline";
@@ -68,8 +69,8 @@ unsigned long dht_lastReadTime = -1000;
 
 NewPing sonar[SONAR_NUM] = {   // Sensor object array.
   NewPing(DOOR_TRIG_PIN, DOOR1_ECHO_PIN, ULTRASONIC_MAX_DISTANCE), // Each sensor's trigger pin, echo pin, and max distance to ping. 0-2
-  NewPing(DOOR_TRIG_PIN, DOOR2_ECHO_PIN, ULTRASONIC_MAX_DISTANCE), 
-  NewPing(DOOR_TRIG_PIN, DOOR3_ECHO_PIN, ULTRASONIC_MAX_DISTANCE)
+  NewPing(DOOR_TRIG_PIN, DOOR2_ECHO_PIN, ULTRASONIC_MAX_DISTANCE)
+  //NewPing(DOOR_TRIG_PIN, DOOR3_ECHO_PIN, ULTRASONIC_MAX_DISTANCE)
 };
 
 WiFiClient espClient;
@@ -77,17 +78,27 @@ PubSubClient client(espClient);
 ESP8266WebServer server(80);
 DHT dht(DHT_PIN, DHT_TYPE);
 
-// Get the state of the garage based upon the sensor distance
-byte getState(int distance)
+// Get the state of the garage door based upon the sensor distance
+byte getStateDoor(int distance1)
 {
-  if (distance <= 1) {
+  if (distance1 <= 1) {
     return DOOR_UNKNOWN; // Should not ever be this close. Probably an error
-  } else if (distance <= ULTRASONIC_DIST_MAX_OPEN) {
-    return DOOR_OPENED;
-  } else if (distance <= ULTRASONIC_DIST_MAX_CAR) {
-    return DOOR_CLOSEDWITHCAR;
+  } else if (distance1 <= ULTRASONIC_DIST_MAX_CLOSE) {
+    return DOOR_CLOSED;
   } else {
-    return DOOR_CLOSEDNOCAR;
+    return DOOR_OPENED;
+  }
+}
+
+// Get the state of the car based upon the sensor distance
+byte getStateCar(int distance2)
+{
+  if (distance2 <= 1) {
+    return CAR_UNKNOWN; // Should not ever be this close. Probably an error
+  } else if (distance2 <= ULTRASONIC_DIST_MAX_CAR) {
+    return CAR_YES;
+  } else {
+    return CAR_NO;
   }
 }
 
@@ -111,10 +122,10 @@ void setup() {
     digitalWrite(DOOR2_RELAY_PIN, HIGH);
   #endif
 
-  #if DOOR3_ENABLED == true
-    pinMode(DOOR3_RELAY_PIN, OUTPUT);
-    digitalWrite(DOOR3_RELAY_PIN, HIGH);
-  #endif
+  //#if DOOR3_ENABLED == true
+  //  pinMode(DOOR3_RELAY_PIN, OUTPUT);
+  //  digitalWrite(DOOR3_RELAY_PIN, HIGH);
+  //#endif
 
   #if DHT_ENABLED == true
     dht.begin();
