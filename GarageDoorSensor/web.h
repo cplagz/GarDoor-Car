@@ -76,10 +76,12 @@ void ServeWebClients()
     byte dst = DOOR_OPENEDNOCAR;
   } else if ((dst1 == DOOR_OPENED) && (dst2 == CAR_YES)) {
     byte dst = DOOR_OPENEDWITHCAR;
-  } else if ((dst == DOOR_CLOSEDNOCAR) || (dst == DOOR_CLOSEDWITHCAR)) {
-    byte dst = ;
+  } else if ((dst1 == DOOR_CLOSED) && (dst2 == CAR_NO)) {
+    byte dst = DOOR_CLOSEDNOCAR;
+  } else if ((dst1 == DOOR_CLOSED) && (dst2 == CAR_YES)) {
+    byte dst = DOOR_CLOSEDWITHCAR;
   } else {
-    byte dst = ;
+    byte dst = UNKNOWN;
   }
   
   inString += F("</label></td>");
@@ -96,12 +98,21 @@ void ServeWebClients()
     inString += F("UNKNOWN");
   }
   inString += F("</label></td></tr>");
-  inString += F("<tr><td><b>Distance:</b></td><td><label id='lbl_dist'>");
+  inString += F("<tr><td><b>Distance Door:</b></td><td><label id='lbl_distdoor'>");
   inString += String(door1_lastDistanceValue);
   inString += F(" (cm)</label></td></tr>");
-  inString += F("<tr><td><b>Previous Reads:</b></td><td><label id='lbl_reads'>");
+  inString += F("<tr><td><b>Previous Reads Door:</b></td><td><label id='lbl_readsdoor'>");
   for (int y=0; y<door_numValues; y++) {
     inString += String(door1_lastDistanceValues[y]);
+    inString += F(",");
+  }
+  inString += F("</label></td><td></td></tr>");
+  inString += F("<tr><td><b>Distance Car:</b></td><td><label id='lbl_distcar'>");
+  inString += String(door2_lastDistanceValue);
+  inString += F(" (cm)</label></td></tr>");
+  inString += F("<tr><td><b>Previous Reads Car:</b></td><td><label id='lbl_readscar'>");
+  for (int y=0; y<door_numValues; y++) {
+    inString += String(door2_lastDistanceValues[y]);
     inString += F(",");
   }
   inString += F("</label></td><td></td></tr>");
@@ -240,8 +251,8 @@ void ServeWebClients()
   inString += RELAY_ACTIVE_TIMEOUT;
   inString += F(" ms</label></td></tr>");
 
-  inString += F("<tr><td><b>Ultrasonic Distance Max Open:</b></td><td><label id='lbl_rssi'>");
-  inString += ULTRASONIC_DIST_MAX_OPEN;
+  inString += F("<tr><td><b>Ultrasonic Distance Max Close:</b></td><td><label id='lbl_rssi'>");
+  inString += ULTRASONIC_DIST_MAX_CLOSE;
   inString += F(" cm</label></td></tr>");
 
   inString += F("<tr><td><b>Ultrasonic Distance Max Car:</b></td><td><label id='lbl_rssi'>");
@@ -260,16 +271,16 @@ void ServeWebClients()
     inString += F("checked");
   #endif
   inString += F(" disabled><label for='cb2'>");
-  inString += DOOR2_ALIAS;
+  inString += CAR_ALIAS;
   inString += F("</label></td></tr>");
   
-  inString += F("<tr><td colspan='2'><input type='checkbox' id='cb3' ");
-  #if DOOR3_ENABLED == true
-    inString += F("checked");
-  #endif
-  inString += F(" disabled><label for='cb3'>");
-  inString += DOOR3_ALIAS;
-  inString += F("</label></td></tr>");
+  //inString += F("<tr><td colspan='2'><input type='checkbox' id='cb3' ");
+  //#if DOOR3_ENABLED == true
+  //  inString += F("checked");
+  //#endif
+  //inString += F(" disabled><label for='cb3'>");
+  //inString += DOOR3_ALIAS;
+  //inString += F("</label></td></tr>");
 
   inString += F("<tr><td colspan='2'><input type='checkbox' id='cb4' ");
   #if DHT_ENABLED == true
