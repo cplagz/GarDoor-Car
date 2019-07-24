@@ -274,9 +274,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Publish(MQTT_AVAIL_TOPIC, birthMessage);
     if (topicToProcess == MQTT_DOOR1_ACTION_TOPIC) {
       sendState(1);
-    } //else if (topicToProcess == MQTT_DOOR2_ACTION_TOPIC) {
-//      sendState(2);
-//    } else if (topicToProcess == MQTT_DOOR3_ACTION_TOPIC) {
+    } else if (topicToProcess == MQTT_CAR_STATUS_TOPIC) {
+      sendState(2);
+    } //else if (topicToProcess == MQTT_DOOR3_ACTION_TOPIC) {
 //      sendState(3);
 //    }
     Serial.println(F(" -> DONE"));
@@ -291,44 +291,44 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 /********************************** START SEND STATE *****************************************/
 void sendState(int door) {
-  //{"state":"open","occupied":unknown,"distance":12,"name":"Door 1"}
-  //{"state":"closed","occupied":true,"distance":1000,"name":"Door 2"}
-  //{"state":"closed","occupied":false,"distance":2350,"name":"Door 3"}
-
+  //{"state":"open","occupied":unknown,"distance":12,"name":"Door1"}
+  //{"state":"unknown","occupied":true,"distance":1000,"name":"Car"}
+ 
   StaticJsonBuffer<BUFFER_SIZE> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
 
-  byte state = DOOR_UNKNOWN;
+  byte statedoor = DOOR_UNKNOWN;
+  byte statecar = CAR_UNKNOWN;  
   char* topic = "";
   if (door == 1) {
-    state = getState(door1_lastDistanceValue);
+    statedoor = getStateDoor(door1_lastDistanceValue);
     topic = MQTT_DOOR1_STATUS_TOPIC;
     root["name"] = DOOR1_ALIAS;
     root["distance"] = door1_lastDistanceValue;
   } else if (door == 2) {
-    state = getState(door2_lastDistanceValue);
-    topic = MQTT_DOOR2_STATUS_TOPIC;
-    root["name"] = DOOR2_ALIAS;
+    statecar = getStateCar(door2_lastDistanceValue);
+    topic = MQTT_CAR_STATUS_TOPIC;
+    root["name"] = CAR_ALIAS;
     root["distance"] = door2_lastDistanceValue;
-  } else if (door == 3) {
-    state = getState(door3_lastDistanceValue);
-    topic = MQTT_DOOR3_STATUS_TOPIC;
-    root["name"] = DOOR3_ALIAS;
-    root["distance"] = door3_lastDistanceValue;
+  //} else if (door == 3) {
+  //  state = getState(door3_lastDistanceValue);
+  //  topic = MQTT_DOOR3_STATUS_TOPIC;
+  //  root["name"] = DOOR3_ALIAS;
+  //  root["distance"] = door3_lastDistanceValue;
   } else {
     return;
   }
 
   char* doorState = "unknown";
   char* occupiedState = "unknown";
-  if (state == DOOR_OPENED) {
+  if (statedoor == DOOR_OPENED) {
     doorState = "open";
-  } else if (state == DOOR_CLOSEDNOCAR) {
+  } else if (statedoor == DOOR_CLOSED) {
     doorState = "closed";
-    occupiedState = "false";
-  } else if (state == DOOR_CLOSEDWITHCAR) {
-    doorState = "closed";
+  } else if (statecar == DOOR_YES) {
     occupiedState = "true";
+  } else if (statecar == DOOR_NO) {
+    occupiedState = "false";
   }
   root["state"] = doorState;
   root["occupied"] = occupiedState;
@@ -376,7 +376,7 @@ void reconnect() {
       // Publish the birth message on connect/reconnect
       Publish(MQTT_AVAIL_TOPIC, birthMessage);
 
-      // Subscribe to the action topics to listen for action messages
+      // Subscribe to the topics to listen for action and status messages
       Serial.print(F("Subscribing to "));
       Serial.print(MQTT_DOOR1_ACTION_TOPIC);
       Serial.println(F("..."));
@@ -385,22 +385,22 @@ void reconnect() {
       
       #if DOOR2_ENABLED == true
         Serial.print(F("Subscribing to "));
-        Serial.print(MQTT_DOOR2_ACTION_TOPIC);
+        Serial.print(MQTT_CAR_STATUS_TOPIC);
         Serial.println(F("..."));
-        client.subscribe(MQTT_DOOR2_ACTION_TOPIC);
+        client.subscribe(MQTT_CAR_STATUS_TOPIC);
       #endif
 
-      #if DOOR3_ENABLED == true
-        Serial.print(F("Subscribing to "));
-        Serial.print(MQTT_DOOR3_ACTION_TOPIC);
-        Serial.println(F("..."));
-        client.subscribe(MQTT_DOOR3_ACTION_TOPIC);
-      #endif
+ //     #if DOOR3_ENABLED == true
+ //       Serial.print(F("Subscribing to "));
+ //       Serial.print(MQTT_DOOR3_ACTION_TOPIC);
+ //       Serial.println(F("..."));
+ //       client.subscribe(MQTT_DOOR3_ACTION_TOPIC);
+ //     #endif
 
       // Publish the current door status on connect/reconnect to ensure status is synced with whatever happened while disconnected
       door1_lastDistanceValue = 0;
       door2_lastDistanceValue = 0;
-      door3_lastDistanceValue = 0;
+//      door3_lastDistanceValue = 0;
       check_door_status();
        
     } else {
@@ -428,7 +428,7 @@ void check_door_status() {
 
   memmove(&door1_lastDistanceValues[1], &door1_lastDistanceValues[0], (door_numValues - 1) * sizeof(door1_lastDistanceValues[0])); // Move the array forward
   door1_lastDistanceValues[0] = distance;
-
+  
   // Find the previous distance that was valid
   lastDistance = 0;
   for (int y=1; y<door_numValues; y++) {
@@ -439,10 +439,10 @@ void check_door_status() {
   }
 
   if ((distance > 0) && (lastDistance > 0)) {
-    state = getState(distance);
-    stateVerify = getState(lastDistance);
+    state = getStateDoor(distance);
+    stateVerify = getStateDoor(lastDistance);
     
-    if ((state == stateVerify) && (state != getState(door1_lastDistanceValue))) {
+    if ((state == stateVerify) && (state != getStateDoor(door1_lastDistanceValue))) {
       digitalWrite(LED_BUILTIN, LOW);     // Turn the status LED on
       door1_lastDistanceValue = distance;
       sendState(1);
@@ -471,10 +471,10 @@ void check_door_status() {
     }
   
     if ((distance > 0) && (lastDistance > 0)) {
-      state = getState(distance);
-      stateVerify = getState(lastDistance);
+      state = getStateCar(distance);
+      stateVerify = getStateCar(lastDistance);
       
-      if ((state == stateVerify) && (state != getState(door2_lastDistanceValue))) {
+      if ((state == stateVerify) && (state != getStateCar(door2_lastDistanceValue))) {
         digitalWrite(LED_BUILTIN, LOW);     // Turn the status LED on
         door2_lastDistanceValue = distance;
         sendState(2);
@@ -485,36 +485,36 @@ void check_door_status() {
 
 
   // ---- Door 3 ----
-  #if DOOR3_ENABLED == true
-    delay(ULTRASONIC_SETTLE_TIMEOUT); // Let the last ping settle
-    distance = sonar[2].ping_cm(); // Take a reading
-    Serial.print(distance);
-    Serial.print(".");
+//  #if DOOR3_ENABLED == true
+//    delay(ULTRASONIC_SETTLE_TIMEOUT); // Let the last ping settle
+//    distance = sonar[2].ping_cm(); // Take a reading
+//    Serial.print(distance);
+//    Serial.print(".");
 
-    memmove(&door3_lastDistanceValues[1], &door3_lastDistanceValues[0], (door_numValues - 1) * sizeof(door3_lastDistanceValues[0])); // Move the array forward
-    door3_lastDistanceValues[0] = distance;
+//    memmove(&door3_lastDistanceValues[1], &door3_lastDistanceValues[0], (door_numValues - 1) * sizeof(door3_lastDistanceValues[0])); // Move the array forward
+//    door3_lastDistanceValues[0] = distance;
   
     // Find the previous distance that was valid
-    lastDistance = 0;
-    for (int y=1; y<door_numValues; y++) {
-      if (door3_lastDistanceValues[y] > 0) {
-        lastDistance = door3_lastDistanceValues[y];
-        break;
-      }
-    }
+//    lastDistance = 0;
+//    for (int y=1; y<door_numValues; y++) {
+//      if (door3_lastDistanceValues[y] > 0) {
+//        lastDistance = door3_lastDistanceValues[y];
+//        break;
+//      }
+//    }
   
-    if ((distance > 0) && (lastDistance > 0)) {
-      state = getState(distance);
-      stateVerify = getState(lastDistance);
+//    if ((distance > 0) && (lastDistance > 0)) {
+//      state = getState(distance);
+//      stateVerify = getState(lastDistance);
       
-      if ((state == stateVerify) && (state != getState(door3_lastDistanceValue))) {
-        digitalWrite(LED_BUILTIN, LOW);     // Turn the status LED on
-        door3_lastDistanceValue = distance;
-        sendState(3);
-        digitalWrite(LED_BUILTIN, HIGH);     // Turn the status LED off
-      }
-    }
-  #endif
+//      if ((state == stateVerify) && (state != getState(door3_lastDistanceValue))) {
+//        digitalWrite(LED_BUILTIN, LOW);     // Turn the status LED on
+//        door3_lastDistanceValue = distance;
+//        sendState(3);
+//        digitalWrite(LED_BUILTIN, HIGH);     // Turn the status LED off
+//      }
+//    }
+//  #endif
 
   Serial.println(".");
 }
