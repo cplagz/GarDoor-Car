@@ -21,14 +21,14 @@
 
 // Distance Parameters
 #define ULTRASONIC_MAX_DISTANCE 400 // Maximum distance (in cm) to ping.
-#define ULTRASONIC_DIST_MAX_OPEN 70 // cm
-#define ULTRASONIC_DIST_MAX_CAR 120 // cm
+#define ULTRASONIC_DIST_MAX_CLOSE 120 // Maximum distance to indicate door is closed (in cm)
+#define ULTRASONIC_DIST_MAX_CAR 120 // Maximum distance to indicate car is present (in cm)
 #define ULTRASONIC_SETTLE_TIMEOUT 500 // ms to wait between pings (as all sensors get triggered at the same time)
 #define RELAY_ACTIVE_TIMEOUT 500 // ms the time the relay will close to actuate the door opener
 #define DOOR_TRIG_PIN 14 // D4 on ESP8266
 
 // Door 1 Parameters
-#define DOOR1_ALIAS "Door 1"
+#define DOOR1_ALIAS "Door"
 #define MQTT_DOOR1_ACTION_TOPIC WIFI_HOSTNAME "/1/action"
 #define MQTT_DOOR1_STATUS_TOPIC WIFI_HOSTNAME "/1/status"
 #define DOOR1_RELAY_PIN 10 // SD3 on ESP8266
@@ -37,21 +37,21 @@
 
 // Door 2 Parameters
 #define DOOR2_ENABLED true
-#define DOOR2_ALIAS "Door 2"
-#define MQTT_DOOR2_ACTION_TOPIC WIFI_HOSTNAME "/2/action"
+#define CAR_ALIAS "Car"
+//#define MQTT_DOOR2_ACTION_TOPIC WIFI_HOSTNAME "/2/action"
 #define MQTT_DOOR2_STATUS_TOPIC WIFI_HOSTNAME "/2/status"
 #define DOOR2_RELAY_PIN 3 // RX on ESP8266
 #define DOOR2_ECHO_PIN 5 // D1 on ESP8266
 #define DOOR2_LIMIT_RELAY_CLOSE false
 
 // Door 3 Parameters
-#define DOOR3_ENABLED true
-#define DOOR3_ALIAS "Door 3"
-#define MQTT_DOOR3_ACTION_TOPIC WIFI_HOSTNAME "/3/action"
-#define MQTT_DOOR3_STATUS_TOPIC WIFI_HOSTNAME "/3/status"
-#define DOOR3_RELAY_PIN 12 // D6 on ESP8266
-#define DOOR3_ECHO_PIN 0 // D3 on ESP8266
-#define DOOR3_LIMIT_RELAY_CLOSE false
+//#define DOOR3_ENABLED true
+//#define DOOR3_ALIAS "Door 3"
+//#define MQTT_DOOR3_ACTION_TOPIC WIFI_HOSTNAME "/3/action"
+//#define MQTT_DOOR3_STATUS_TOPIC WIFI_HOSTNAME "/3/status"
+//#define DOOR3_RELAY_PIN 12 // D6 on ESP8266
+//#define DOOR3_ECHO_PIN 0 // D3 on ESP8266
+//#define DOOR3_LIMIT_RELAY_CLOSE false
 
 // DHT Parameters
 #define DHT_ENABLED false
