@@ -54,7 +54,7 @@
 //#define DOOR3_LIMIT_RELAY_CLOSE false
 
 // DHT Parameters
-#define DHT_ENABLED false
+#define DHT_ENABLED true
 #define DHT_PIN 13 // D7 on ESP8266
 #define DHT_TYPE DHT22 // or: DHT21 or DHT22
 #define MQTT_TEMPERATURE_TOPIC WIFI_HOSTNAME "/temperature"
