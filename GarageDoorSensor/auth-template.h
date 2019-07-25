@@ -25,7 +25,7 @@
 #define ULTRASONIC_DIST_MAX_CAR 120 // Maximum distance to indicate car is present (in cm)
 #define ULTRASONIC_SETTLE_TIMEOUT 500 // ms to wait between pings (as all sensors get triggered at the same time)
 #define RELAY_ACTIVE_TIMEOUT 500 // ms the time the relay will close to actuate the door opener
-#define DOOR_TRIG_PIN 14 // D4 on ESP8266
+#define DOOR_TRIG_PIN 14 // D5 on ESP8266
 
 // Door 1 Parameters
 #define DOOR1_ALIAS "Door"
