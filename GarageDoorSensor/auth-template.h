@@ -42,7 +42,7 @@
 #define MQTT_CAR_STATUS_TOPIC WIFI_HOSTNAME "/2/status"
 //#define DOOR2_RELAY_PIN 3 // RX on ESP8266
 #define DOOR2_ECHO_PIN 5 // D1 on ESP8266
-#define DOOR2_LIMIT_RELAY_CLOSE false
+//#define DOOR2_LIMIT_RELAY_CLOSE false
 
 // Door 3 Parameters
 //#define DOOR3_ENABLED true
