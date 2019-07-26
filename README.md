@@ -1,19 +1,18 @@
-# ESP8266 MQTT GarageDoorSensor and Temperture HomeAssistant
-This project allows for up to  three "dumb" garage door openers to be controlled (open/close) and report garage door status (open/closed/occupied) via MQTT. In addition if you can also monitor the Temperture and Humidity within your garage to over MQTT as well.
+# ESP8266 MQTT Garage Door Opener, Garage Door and Car Sensor, and Temperture Monitor using Home Assistant
+This project allows you to control (open/close) a "dumb" garage door opener for a garage door and independently report the garage door status (open/closed) and presence of a car in the garage via MQTT. In addition you can monitor the Temperture and Humidity within your garage over MQTT as well.
 
-The code covered in this repository utilizes [Home Assistant's MQTT Cover Component](https://www.home-assistant.io/components/cover.mqtt/) and uses an ESP8266 microcontroller. There is a sample configuration in the repository
+The code covered in this repository utilises [Home Assistant's MQTT Cover Component](https://www.home-assistant.io/components/cover.mqtt/) and uses an ESP8266 microcontroller. There is a sample configuration in the repository
 
-Inspiration for this comes from GarHAge and OpenGarage. The Temp and Humidity code for a DHT22 from GarHage, and now it morphed to change to NewPing for the ultrasonic HC-SR04 due to the inconsitant reading using the Ultrasonic library with the HC-SCR04 I aquired from china.
-
-**NOTE:** I am currrently only using this with one garage door, to enable for 2 or 3, just enable the use to true in the auth.h file you create
+The code is based on DotNetDann's GarDoor ESP-MQTT-GarageDoorSensor project (which took inspiration from GarHAge and OpenGarage). 
 
 #### Supported Features Include
-- Report status on up to 3 garage doors
+- Report status of the garage door
+- Report presence of a car in the garage whether the door is open or not 
 - Report information on Temp and Humidity
-- Ability to Select Celius or Fahrenheit for Temp
-- Web page for status of Garage Doors and Temperature
+- Ability to select Celius or Fahrenheit for Temp
+- Web page for status of the garage door, car presence, and temperature
 - Events and status sent via MQTT
-- MQTT commands to toggle relays to open/close the garage doors
+- MQTT commands to toggle relay to open/close the garage door
 - Over-the-Air (OTA) Upload from the ArduinoIDE!
 
 
@@ -24,28 +23,25 @@ More information on OTA uploading can be found [here](http://esp8266.github.io/A
 
 
 #### Parts List
-- [NodeMCU](https://www.amazon.com/HiLetgo-Version-NodeMCU-Internet-Development/dp/B010O1G1ES/)
-- [1-3 x HC-SR04 Ultrasonic Sensors](https://au.element14.com/mcm/83-17989/hc-sr04-ultrasonic-sensor-for/dp/2801408?ost=HC-SR04) Depending on how many Doors you will monitor
-- [5V 4 Channel Relay Board](https://www.ebay.com./sch/i.html?_from=R40&_trksid=p2380057.m570.l1313.TR0.TRC0.H0.X5V+4+Channel+Relay+Board.TRS0&_nkw=5V+4+Channel+Relay+Board&_sacat=0) If Controling 2 or More Garage Doors this is the best choice
-- Otherwise buy a Single Relay for a singe Door
-	[5V 1 Channel Relay Board](https://www.ebay.com./sch/i.html?_from=R40&_trksid=p2380057.m570.l1313.TR0.TRC0.H0.X5V+1+Channel+Relay+Board.TRS0&_nkw=5V+1+Channel+Relay+Board&_sacat=0)
+- [NodeMCU](https://www.aliexpress.com/item/32665100123.html)
+- [2 x HC-SR04P Ultrasonic Sensors](https://www.aliexpress.com/item/32711959780.html) 
+- [5V 1 Channel Relay Board](https://www.gearbest.com/relays/pp_226384.html)
+- [DHT22 sensor](https://www.aliexpress.com/item/32899808141.html)  
+- Wires to connect sensors/relay to NodeMCU and to connect relay to your garage door control panel 
+- Power source for NodeMCU  
+- Breadboard (optional)
 
 #### Wiring Diagram
-![alt text](https://github.com/DotNetDann/ESP-MQTT-GarageDoorSensor/blob/master/Wiring%20Diagram.png?raw=true "Wiring Diagram")
+![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/Wiring%20Diagram-RollerDoor.png?raw=true "Wiring Diagram")
 
 
 #### Web page
-![alt text](https://github.com/DotNetDann/ESP-MQTT-GarageDoorSensor/blob/master/WebpageStatus.png?raw=true "Webpage Status")
-
-
-#### Completed Project
-![alt text](https://github.com/DotNetDann/ESP-MQTT-GarageDoorSensor/blob/master/CompletedProject.jpg?raw=true "Completed Project")
-
+![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/WebpageStatus.png?raw=true "Webpage Status")
 
 #### Sample MQTT commands
 Listen to MQTT commands
 > mosquitto_sub -h 172.17.0.1 -t '#'
 
-Open the second garage door
-> mosquitto_pub -h 172.17.0.1 -t GarDoor/2/action -m "OPEN"
+Open the garage door
+> mosquitto_pub -h 172.17.0.1 -t GarDoor/1/action -m "OPEN"
 
