@@ -29,7 +29,6 @@ binary_sensor:
     payload_available: "online"
     payload_not_available: "offline"
     qos: 0
-    optimistic: false
     retain: false
     device_class: occupancy
     value_template: '{{value_json.occupied}}'
@@ -50,4 +49,5 @@ cover:
     state_closed: "closed"
     payload_available: "online"
     payload_not_available: "offline"
+    device_class: garage
 
