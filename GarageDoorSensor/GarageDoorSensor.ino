@@ -263,7 +263,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     sendState(1);
 //    } else if (topicToProcess == MQTT_CAR_STATUS_TOPIC) {
     sendState(2);
-    } //else if (topicToProcess == MQTT_DOOR3_ACTION_TOPIC) {
+//    } else if (topicToProcess == MQTT_DOOR3_ACTION_TOPIC) {
 //      sendState(3);
 //    }
     Serial.println(F(" -> DONE"));
@@ -312,9 +312,9 @@ void sendState(int door) {
     doorState = "open";
   } else if (statedoor == DOOR_CLOSED) {
     doorState = "closed";
-  } else if (statecar == DOOR_YES) {
+  } else if (statecar == CAR_YES) {
     occupiedState = "true";
-  } else if (statecar == DOOR_NO) {
+  } else if (statecar == CAR_NO) {
     occupiedState = "false";
   }
   root["state"] = doorState;
