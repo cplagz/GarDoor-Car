@@ -38,20 +38,9 @@
 // Door 2 Parameters
 #define DOOR2_ENABLED true
 #define CAR_ALIAS "Car"
-//#define MQTT_DOOR2_ACTION_TOPIC WIFI_HOSTNAME "/2/action"
 #define MQTT_CAR_STATUS_TOPIC WIFI_HOSTNAME "/2/status"
-//#define DOOR2_RELAY_PIN 3 // RX on ESP8266
 #define DOOR2_ECHO_PIN 5 // D1 on ESP8266
-//#define DOOR2_LIMIT_RELAY_CLOSE false
 
-// Door 3 Parameters
-//#define DOOR3_ENABLED true
-//#define DOOR3_ALIAS "Door 3"
-//#define MQTT_DOOR3_ACTION_TOPIC WIFI_HOSTNAME "/3/action"
-//#define MQTT_DOOR3_STATUS_TOPIC WIFI_HOSTNAME "/3/status"
-//#define DOOR3_RELAY_PIN 10 // SD3 on ESP8266
-//#define DOOR3_ECHO_PIN 0 // D3 on ESP8266
-//#define DOOR3_LIMIT_RELAY_CLOSE false
 
 // DHT Parameters
 #define DHT_ENABLED true
