@@ -29,7 +29,6 @@ binary_sensor:
     payload_available: "online"
     payload_not_available: "offline"
     qos: 0
-    retain: false
     device_class: occupancy
     value_template: '{{value_json.occupied}}'
 
