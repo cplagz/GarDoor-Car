@@ -44,6 +44,11 @@
 #define CAR_NO               0x03
 #define CAR_YES              0x04
 #define CAR_UNKNOWN          0x05
+#define DOOR_OPENEDNOCAR     0x06
+#define DOOR_CLOSEDWITHCAR   0x07
+#define DOOR_CLOSEDNOCAR     0x08
+#define DOOR_OPENEDWITHCAR   0x09
+#define NOTKNOWN             0x10
 #define SONAR_NUM 2      // Number of sensors.
 
 
