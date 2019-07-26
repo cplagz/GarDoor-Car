@@ -133,86 +133,7 @@ void ServeWebClients()
   #endif
   
   inString += F("</table><br />");
-
-  /*  
-  #if DOOR2_ENABLED == true
-    // DOOR 2
-    dst = getState(door2_lastDistanceValue);
-    inString += F("<h3 class='ui-bar ui-bar-a ui-corner-all'>Door 2</h3>");
-    inString += F("<table><tr><td><b>Door&nbsp;State:<br></td><td><label id='lbl_status' ");
-    if (dst == DOOR_OPENED) {
-      inString += F("style='color:red;'>OPEN");
-    } else if ((dst == DOOR_CLOSEDNOCAR) || (dst == DOOR_CLOSEDWITHCAR)) {
-      inString += F("style='color:green;'>CLOSED");
-    } else {
-      inString += F(">UNKNOWN");
-    }
-    inString += F("</label></td>");
-    inString += F("<td rowspan='3'>");
-    inString += GetGaragePic(dst);
-    inString += F("</td>");
-    inString += F("</tr><tr><td><b><label id='lbl_vstatus1'>Vehicle&nbsp;State:&nbsp</label></b></td>");
-    inString += F("<td><label id='lbl_vstatus'>");
-    if (dst == DOOR_CLOSEDNOCAR) {
-      inString += F("Empty");
-    } else if (dst == DOOR_CLOSEDWITHCAR) {
-      inString += F("Present");
-    } else {
-      inString += F("UNKNOWN");
-    }
-    inString += F("</label></td></tr>");
-    inString += F("<tr><td><b>Distance:</b></td><td><label id='lbl_dist'>");
-    inString += String(door2_lastDistanceValue);
-    inString += F(" (cm)</label></td></tr>");
-    inString += F("<tr><td><b>Previous Reads:</b></td><td><label id='lbl_reads'>");
-    for (int y=0; y<door_numValues; y++) {
-      inString += String(door2_lastDistanceValues[y]);
-      inString += F(",");
-    }
-    inString += F("</label></td><td></td></tr>");
-    inString += F("</table><br />");
-  #endif
-
-
-  #if DOOR3_ENABLED == true
-    // DOOR 3
-    dst = getState(door3_lastDistanceValue);
-    inString += F("<h3 class='ui-bar ui-bar-a ui-corner-all'>Door 3</h3>");
-    inString += F("<table><tr><td><b>Door&nbsp;State:<br></td><td><label id='lbl_status' ");
-    if (dst == DOOR_OPENED) {
-      inString += F("style='color:red;'>OPEN");
-    } else if ((dst == DOOR_CLOSEDNOCAR) || (dst == DOOR_CLOSEDWITHCAR)) {
-      inString += F("style='color:green;'>CLOSED");
-    } else {
-      inString += F(">UNKNOWN");
-    }
-    inString += F("</label></td>");
-    inString += F("<td rowspan='3'>");
-    inString += GetGaragePic(dst);
-    inString += F("</td>");
-    inString += F("</tr><tr><td><b><label id='lbl_vstatus1'>Vehicle&nbsp;State:&nbsp</label></b></td>");
-    inString += F("<td><label id='lbl_vstatus'>");
-    if (dst == DOOR_CLOSEDNOCAR) {
-      inString += F("Empty");
-    } else if (dst == DOOR_CLOSEDWITHCAR) {
-      inString += F("Present");
-    } else {
-      inString += F("UNKNOWN");
-    }
-    inString += F("</label></td></tr>");
-    inString += F("<tr><td><b>Distance:</b></td><td><label id='lbl_dist'>");
-    inString += String(door3_lastDistanceValue);
-    inString += F(" (cm)</label></td></tr>");
-    inString += F("<tr><td><b>Previous Reads:</b></td><td><label id='lbl_reads'>");
-    for (int y=0; y<door_numValues; y++) {
-      inString += String(door3_lastDistanceValues[y]);
-      inString += F(",");
-    }
-    inString += F("</label></td><td></td></tr>");
-    inString += F("</table><br />");
-  #endif
-*/
-  
+   
   inString += F("</div>");
 
   
@@ -273,14 +194,7 @@ void ServeWebClients()
   inString += CAR_ALIAS;
   inString += F("</label></td></tr>");
   
-  //inString += F("<tr><td colspan='2'><input type='checkbox' id='cb3' ");
-  //#if DOOR3_ENABLED == true
-  //  inString += F("checked");
-  //#endif
-  //inString += F(" disabled><label for='cb3'>");
-  //inString += DOOR3_ALIAS;
-  //inString += F("</label></td></tr>");
-
+  
   inString += F("<tr><td colspan='2'><input type='checkbox' id='cb4' ");
   #if DHT_ENABLED == true
     inString += F("checked");
