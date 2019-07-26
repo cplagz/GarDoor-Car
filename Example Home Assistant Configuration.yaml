@@ -20,6 +20,21 @@ sensor:
    qos: 0
    unit_of_measurement: '%'
 
+binary_sensor:
+  - platform: mqtt
+    name: "Car Presence"
+    state_topic: "GarDoor/2/status"
+    payload_on: "true"
+    payload_off: "false"
+    availability_topic: "GarDoor/availability"
+    payload_available: "online"
+    payload_not_available: "offline"
+    qos: 0
+    optimistic: false
+    retain: false
+    device_class: occupancy
+    value_template: '{{value_json.occupied}}'
+
 cover:
   - platform: mqtt
     name: "Garage Door"
@@ -36,14 +51,4 @@ cover:
     state_closed: "closed"
     payload_available: "online"
     payload_not_available: "offline"
-
-  - platform: mqtt
-    name: "Car Presence"
-    state_topic: "GarDoor/2/status/value"
-    availability_topic: "GarDoor/availability"
-    qos: 0
-    optimistic: false
-    retain: false
-    state_open: "open"
-    state_closed: "closed"
 
