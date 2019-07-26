@@ -1,5 +1,5 @@
 # ESP8266 MQTT Garage Door Opener, Garage Door and Car Sensor, and Temperture Monitor using Home Assistant
-This project allows you to control (open/close) a "dumb" garage door opener for a garage door and independently report the garage door status (open/closed) and presence of a car in the garage via MQTT. In addition you can monitor the Temperture and Humidity within your garage over MQTT as well.
+This project allows you to control (open/close) a "dumb" garage door opener for a garage door and independently report the garage door status (open/closed) and presence of a car in the garage via MQTT. In addition you can monitor the Temperture and Humidity within your garage over MQTT as well. This project requires two ultrasonic sensors: one pointed at the garage door, and the other pointed at the normal location of the car. This allows the car to be detected even if the garage door is open, which cannot be achieved with OpenGarage or DotNetDann's version.  
 
 The code covered in this repository utilises [Home Assistant's MQTT Cover Component](https://www.home-assistant.io/components/cover.mqtt/) and uses an ESP8266 microcontroller. There is a sample configuration in the repository
 
