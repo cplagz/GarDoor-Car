@@ -59,10 +59,8 @@ const int BUFFER_SIZE = JSON_OBJECT_SIZE(10);
 const int door_numValues = 10;
 int door1_lastDistanceValues[door_numValues];
 int door2_lastDistanceValues[door_numValues];
-// int door3_lastDistanceValues[door_numValues];
 int door1_lastDistanceValue = 0;
 int door2_lastDistanceValue = 0;
-// #int door3_lastDistanceValue = 0;
 
 char* birthMessage = "online";
 const char* lwtMessage = "offline";
@@ -70,12 +68,20 @@ const char* lwtMessage = "offline";
 const unsigned long dht_publish_interval_s = DHT_PUBLISH_INTERVAL;
 unsigned long dht_lastReadTime = -1000;
 
+const char* mqtt_broker = MQTT_SERVER;
+const char* mqtt_clientId = WIFI_HOSTNAME;
+const char* mqtt_username = MQTT_USER;
+const char* mqtt_password = MQTT_PASSWORD;
+String availabilityBase = WIFI_HOSTNAME;
+String availabilitySuffix = "/availability";
+String availabilityTopicStr = availabilityBase + availabilitySuffix;
+const char* availabilityTopic = availabilityTopicStr.c_str();
+
 /******************************** GLOBAL OBJECTS *******************************/
 
 NewPing sonar[SONAR_NUM] = {   // Sensor object array.
   NewPing(DOOR_TRIG_PIN, DOOR1_ECHO_PIN, ULTRASONIC_MAX_DISTANCE), // Each sensor's trigger pin, echo pin, and max distance to ping. 0-2
   NewPing(DOOR_TRIG_PIN, DOOR2_ECHO_PIN, ULTRASONIC_MAX_DISTANCE)
-  //NewPing(DOOR_TRIG_PIN, DOOR3_ECHO_PIN, ULTRASONIC_MAX_DISTANCE)
 };
 
 WiFiClient espClient;
@@ -122,18 +128,13 @@ void setup() {
   pinMode(DOOR1_RELAY_PIN, OUTPUT);
   digitalWrite(DOOR1_RELAY_PIN, HIGH);
 
-  //#if DOOR3_ENABLED == true
-  //  pinMode(DOOR3_RELAY_PIN, OUTPUT);
-  //  digitalWrite(DOOR3_RELAY_PIN, HIGH);
-  //#endif
-
   #if DHT_ENABLED == true
     dht.begin();
   #endif
 
   setup_wifi();
 
-  client.setServer(MQTT_SERVER, MQTT_PORT);
+  client.setServer(mqtt_broker, MQTT_PORT);
   client.setCallback(callback);
 
   server.on("/", ServeWebClients);
@@ -221,14 +222,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
          !DOOR1_LIMIT_RELAY_CLOSE) { // We are not limiting the open command
       toggleRelay(DOOR1_RELAY_PIN);
       Serial.print(F("Door1 relay OPEN!"));    
-   
-//    } else if (topicToProcess == MQTT_DOOR3_ACTION_TOPIC && // Door 3
-//         (getState(door3_lastDistanceValue) == DOOR_CLOSEDNOCAR || getState(door3_lastDistanceValue) == DOOR_CLOSEDWITHCAR) && // Garage is currently closed
-//         door3_lastDistanceValues[0] > 0 && // Last value was valid (Known state)
-//         !DOOR3_LIMIT_RELAY_CLOSE) { // We are not limiting the open command
-//      toggleRelay(DOOR3_RELAY_PIN);
-//      Serial.print(F("Door3 relay OPEN!"));
-
+ 
     } else {
       Serial.print(F("criteria not meet!"));
     }
@@ -244,12 +238,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
       toggleRelay(DOOR1_RELAY_PIN);
       Serial.print(F("Door1 relay CLOSED!"));
 
-//    } else if (topicToProcess == MQTT_DOOR3_ACTION_TOPIC && 
-//         getState(door3_lastDistanceValue) == DOOR_OPENED &&  // Garage is currently OPEN
-//         door3_lastDistanceValues[0] > 0) { // Last value was valid (Known state)
-//      toggleRelay(DOOR3_RELAY_PIN);
-//      Serial.print(F("Door3 relay CLOSED!"));
-
     } else {
       Serial.print(F("criteria not meet!"));
     }
@@ -259,13 +247,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
   else if (payloadToProcess == "STATE") {
     Serial.print(F("Publishing on-demand status update!"));
     Publish(MQTT_AVAIL_TOPIC, birthMessage);
-//    if (topicToProcess == MQTT_DOOR1_ACTION_TOPIC) {
     sendState(1);
-//    } else if (topicToProcess == MQTT_CAR_STATUS_TOPIC) {
     sendState(2);
-//    } else if (topicToProcess == MQTT_DOOR3_ACTION_TOPIC) {
-//      sendState(3);
-//    }
     Serial.println(F(" -> DONE"));
   }
   else if (payloadToProcess == "STOP") {
@@ -297,11 +280,7 @@ void sendState(int door) {
     topic = MQTT_CAR_STATUS_TOPIC;
     root["name"] = CAR_ALIAS;
     root["distance"] = door2_lastDistanceValue;
-  //} else if (door == 3) {
-  //  state = getState(door3_lastDistanceValue);
-  //  topic = MQTT_DOOR3_STATUS_TOPIC;
-  //  root["name"] = DOOR3_ALIAS;
-  //  root["distance"] = door3_lastDistanceValue;
+  
   } else {
     return;
   }
@@ -325,7 +304,7 @@ void sendState(int door) {
 
   Publish(topic, buffer);
 
-  // For HA. Cannot read JSON so send a simple state result also
+  // For HA. If not using JSON can use a simple state result also
   char* extraTopicState = "/value";
   char extraTopic[100];
   snprintf(extraTopic, sizeof extraTopic, "%s%s", topic, extraTopicState);
@@ -357,7 +336,7 @@ void reconnect() {
   while (!client.connected()) {
     Serial.print(F("Attempting MQTT connection..."));
     // Attempt to connect
-    if (client.connect(WIFI_HOSTNAME, MQTT_USER, MQTT_PASSWORD, MQTT_AVAIL_TOPIC, 0, true, lwtMessage)) {
+    if (client.connect(mqtt_clientId, mqtt_username, mqtt_password, availabilityTopic, 0, true, lwtMessage)) {
       Serial.println(F("connected"));
 
       // Publish the birth message on connect/reconnect
@@ -377,17 +356,9 @@ void reconnect() {
         client.subscribe(MQTT_CAR_STATUS_TOPIC);
       #endif
 
- //     #if DOOR3_ENABLED == true
- //       Serial.print(F("Subscribing to "));
- //       Serial.print(MQTT_DOOR3_ACTION_TOPIC);
- //       Serial.println(F("..."));
- //       client.subscribe(MQTT_DOOR3_ACTION_TOPIC);
- //     #endif
-
       // Publish the current door status on connect/reconnect to ensure status is synced with whatever happened while disconnected
       door1_lastDistanceValue = 0;
       door2_lastDistanceValue = 0;
-//      door3_lastDistanceValue = 0;
       check_door_status();
        
     } else {
@@ -469,39 +440,6 @@ void check_door_status() {
       }
     }
   #endif
-
-
-  // ---- Door 2 ----
-//  #if DOOR3_ENABLED == true
-//    delay(ULTRASONIC_SETTLE_TIMEOUT); // Let the last ping settle
-//    distance = sonar[2].ping_cm(); // Take a reading
-//    Serial.print(distance);
-//    Serial.print(".");
-
-//    memmove(&door3_lastDistanceValues[1], &door3_lastDistanceValues[0], (door_numValues - 1) * sizeof(door3_lastDistanceValues[0])); // Move the array forward
-//    door3_lastDistanceValues[0] = distance;
-  
-    // Find the previous distance that was valid
-//    lastDistance = 0;
-//    for (int y=1; y<door_numValues; y++) {
-//      if (door3_lastDistanceValues[y] > 0) {
-//        lastDistance = door3_lastDistanceValues[y];
-//        break;
-//      }
-//    }
-  
-//    if ((distance > 0) && (lastDistance > 0)) {
-//      state = getState(distance);
-//      stateVerify = getState(lastDistance);
-      
-//      if ((state == stateVerify) && (state != getState(door3_lastDistanceValue))) {
-//        digitalWrite(LED_BUILTIN, LOW);     // Turn the status LED on
-//        door3_lastDistanceValue = distance;
-//        sendState(3);
-//        digitalWrite(LED_BUILTIN, HIGH);     // Turn the status LED off
-//      }
-//    }
-//  #endif
 
   Serial.println(".");
 }
