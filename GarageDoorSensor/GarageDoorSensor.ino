@@ -14,7 +14,7 @@
   - Where this code was forked from https://github.com/DotNetDann/ESP-MQTT-GarageDoorSensor
 */
 
-//1.9R Change to use for a single roller door with car detection using 2 ultrasonic sensors (Author: SmbKiwi)
+//1.9R Change to use for a single garage door with seperate car detection using 2 ultrasonic sensors (Author: SmbKiwi)
 
 // 1.8 Change pins and small clean
 // 1.7 Add ability to only close garage doors
@@ -117,11 +117,6 @@ void setup() {
   pinMode(DOOR1_RELAY_PIN, OUTPUT);
   digitalWrite(DOOR1_RELAY_PIN, HIGH);
 
-  //#if DOOR2_ENABLED == true
-  //  pinMode(DOOR2_RELAY_PIN, OUTPUT);
-  //  digitalWrite(DOOR2_RELAY_PIN, HIGH);
-  //#endif
-
   //#if DOOR3_ENABLED == true
   //  pinMode(DOOR3_RELAY_PIN, OUTPUT);
   //  digitalWrite(DOOR3_RELAY_PIN, HIGH);
@@ -220,15 +215,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
          door1_lastDistanceValues[0] > 0 && // Last value was valid (Known state)
          !DOOR1_LIMIT_RELAY_CLOSE) { // We are not limiting the open command
       toggleRelay(DOOR1_RELAY_PIN);
-      Serial.print(F("Door1 relay OPEN!"));
-      
-//    } else if (topicToProcess == MQTT_DOOR2_ACTION_TOPIC && // Door 2
-//         (getState(door2_lastDistanceValue) == DOOR_CLOSEDNOCAR || getState(door2_lastDistanceValue) == DOOR_CLOSEDWITHCAR) && // Garage is currently closed
-//         door2_lastDistanceValues[0] > 0 && // Last value was valid (Known state)
-//         !DOOR2_LIMIT_RELAY_CLOSE) { // We are not limiting the open command
-//      toggleRelay(DOOR2_RELAY_PIN);
-//      Serial.print(F("Door2 relay OPEN!"));
-      
+      Serial.print(F("Door1 relay OPEN!"));    
+   
 //    } else if (topicToProcess == MQTT_DOOR3_ACTION_TOPIC && // Door 3
 //         (getState(door3_lastDistanceValue) == DOOR_CLOSEDNOCAR || getState(door3_lastDistanceValue) == DOOR_CLOSEDWITHCAR) && // Garage is currently closed
 //         door3_lastDistanceValues[0] > 0 && // Last value was valid (Known state)
@@ -251,12 +239,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
       toggleRelay(DOOR1_RELAY_PIN);
       Serial.print(F("Door1 relay CLOSED!"));
 
-//    } else if (topicToProcess == MQTT_DOOR2_ACTION_TOPIC && 
-//         getState(door2_lastDistanceValue) == DOOR_OPENED &&  // Garage is currently OPEN
-//         door2_lastDistanceValues[0] > 0) { // Last value was valid (Known state)
-//      toggleRelay(DOOR2_RELAY_PIN);
-//      Serial.print(F("Door2 relay CLOSED!"));
-
 //    } else if (topicToProcess == MQTT_DOOR3_ACTION_TOPIC && 
 //         getState(door3_lastDistanceValue) == DOOR_OPENED &&  // Garage is currently OPEN
 //         door3_lastDistanceValues[0] > 0) { // Last value was valid (Known state)
@@ -272,10 +254,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
   else if (payloadToProcess == "STATE") {
     Serial.print(F("Publishing on-demand status update!"));
     Publish(MQTT_AVAIL_TOPIC, birthMessage);
-    if (topicToProcess == MQTT_DOOR1_ACTION_TOPIC) {
-      sendState(1);
-    } else if (topicToProcess == MQTT_CAR_STATUS_TOPIC) {
-      sendState(2);
+//    if (topicToProcess == MQTT_DOOR1_ACTION_TOPIC) {
+    sendState(1);
+//    } else if (topicToProcess == MQTT_CAR_STATUS_TOPIC) {
+    sendState(2);
     } //else if (topicToProcess == MQTT_DOOR3_ACTION_TOPIC) {
 //      sendState(3);
 //    }
@@ -451,7 +433,7 @@ void check_door_status() {
   }
 
 
-  // ---- Door 2 ----
+  // ---- Car ----
   #if DOOR2_ENABLED == true
     delay(ULTRASONIC_SETTLE_TIMEOUT); // Let the last ping settle
     distance = sonar[1].ping_cm(); // Take a reading
@@ -484,7 +466,7 @@ void check_door_status() {
   #endif
 
 
-  // ---- Door 3 ----
+  // ---- Door 2 ----
 //  #if DOOR3_ENABLED == true
 //    delay(ULTRASONIC_SETTLE_TIMEOUT); // Let the last ping settle
 //    distance = sonar[2].ping_cm(); // Take a reading
