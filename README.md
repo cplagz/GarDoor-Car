@@ -35,8 +35,14 @@ More information on OTA uploading can be found [here](http://esp8266.github.io/A
 ![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/Wiring%20Diagram-RollerDoor.png?raw=true "Wiring Diagram")
 
 
-#### Web page
-![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/WebpageStatus.png?raw=true "Webpage Status")
+#### Web page examples
+![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/WebpageStatus1.png?raw=true "Webpage Status")
+
+![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/WebpageStatus2.png?raw=true "Webpage Status")
+
+![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/WebpageStatus3.png?raw=true "Webpage Status")
+
+![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/WebpageStatus4.png?raw=true "Webpage Status")
 
 #### Sample MQTT commands
 Listen to MQTT commands
