@@ -5,8 +5,7 @@ mqtt:
   keepalive: 60
   username: YOURUSERNAME
   password: YOURPASSWORD
-  protocol: 3.1
-
+  
 sensor:
  - platform: mqtt
    state_topic: "GarDoor/temperature"
