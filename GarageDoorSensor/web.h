@@ -72,17 +72,16 @@ void ServeWebClients()
     inString += F(">UNKNOWN");
   }
   
+  byte dst = NOTKNOWN;
   if ((dst1 == DOOR_OPENED) && (dst2 == CAR_NO)) {
-    byte dst = DOOR_OPENEDNOCAR;
+    dst = DOOR_OPENEDNOCAR;
   } else if ((dst1 == DOOR_OPENED) && (dst2 == CAR_YES)) {
-    byte dst = DOOR_OPENEDWITHCAR;
+    dst = DOOR_OPENEDWITHCAR;
   } else if ((dst1 == DOOR_CLOSED) && (dst2 == CAR_NO)) {
-    byte dst = DOOR_CLOSEDNOCAR;
+    dst = DOOR_CLOSEDNOCAR;
   } else if ((dst1 == DOOR_CLOSED) && (dst2 == CAR_YES)) {
-    byte dst = DOOR_CLOSEDWITHCAR;
-  } else {
-    byte dst = UNKNOWN;
-  }
+    dst = DOOR_CLOSEDWITHCAR;
+  } 
   
   inString += F("</label></td>");
   inString += F("<td rowspan='3'>");
