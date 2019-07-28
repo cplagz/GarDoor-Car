@@ -44,6 +44,12 @@ More information on OTA uploading can be found [here](http://esp8266.github.io/A
 
 ![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/webpagestatus4.png?raw=true "Webpage Status")
 
+#### Example Home Assistant Configuration 
+
+[YAML Configuration](https://github.com/SmbKiwi/ESP-MQTT-HA-Garage-Door-Opener-with-Garage-Door-and-Car-Presence-Sensors-with-Temperature-Monitor/blob/master/Example%20Home%20Assistant%20Configuration.yaml)
+
+![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/HA-entities.png?raw=true "HA Example")
+
 #### Sample MQTT commands
 Listen to MQTT commands
 > mosquitto_sub -h 172.17.0.1 -t '#'
