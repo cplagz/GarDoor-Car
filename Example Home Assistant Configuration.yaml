@@ -31,6 +31,15 @@ binary_sensor:
     qos: 0
     device_class: occupancy
     value_template: '{{value_json.occupied}}'
+    
+  - platform: mqtt
+    name: "Garage Door Status"
+    state_topic: "GarDoor/1/status"
+    payload_on: "open"
+    payload_off: "closed"
+    availability_topic: "GarDoor/availability"
+    qos: 0
+    device_class: opening
 
 cover:
   - platform: mqtt
