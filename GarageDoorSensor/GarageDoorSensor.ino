@@ -304,11 +304,19 @@ void sendState(int door) {
 
   Publish(topic, buffer);
 
-  // For HA. If not using JSON can use a simple state result also
-  char* extraTopicState = "/value";
-  char extraTopic[100];
-  snprintf(extraTopic, sizeof extraTopic, "%s%s", topic, extraTopicState);
-  Publish(extraTopic, doorState);
+  // For HA. If you wish to use simple state result instead of JSON
+  if (door == 1) {
+    char* extraTopicState = "/value";
+    char extraTopic[100];
+    snprintf(extraTopic, sizeof extraTopic, "%s%s", topic, extraTopicState);
+    Publish(extraTopic, doorState);
+  }
+  if (door == 2) {
+    char* extraTopicState = "/value";
+    char extraTopic[100];
+    snprintf(extraTopic, sizeof extraTopic, "%s%s", topic, extraTopicState);
+    Publish(extraTopic, occupiedState);
+  }
 }
 
 void Publish(char* topic, char* message) {
