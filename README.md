@@ -29,9 +29,10 @@ More information on OTA uploading can be found [here](http://esp8266.github.io/A
 #### Parts List
 - [NodeMCU](https://www.aliexpress.com/item/32665100123.html)
 - [2 x HC-SR04P Ultrasonic Sensors](https://www.aliexpress.com/item/32711959780.html) 
-- [5V 1 Channel Relay Board](https://www.gearbest.com/relays/pp_226384.html)
+- [5V 1 Channel Relay Board](https://www.gearbest.com/relays/pp_226384.html) Active-High or Active-Low supported
 - [DHT22 sensor](https://www.aliexpress.com/item/32899808141.html)  
-- Dupont cables to connect sensors/relay to NodeMCU and to connect relay to your garage door control panel 
+- Dupont cables to connect sensors/relay to NodeMCU
+- Electrical cable to connect the relay to your garage door control panel 
 - Power source for NodeMCU: USB cable or 5V power supply  
 - Breadboard (optional)
 
