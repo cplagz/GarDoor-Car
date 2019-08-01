@@ -1,9 +1,11 @@
-# GarDoor&Car:
+# GarDoor-Car:
 
 ## ESP8266 MQTT Garage Door Opener, Garage Door and Car Sensor, and Temperature Monitor using Home Assistant
 This project allows you to control (open/close) a "dumb" garage door opener for a garage door and independently report the garage door status (open/closed) and presence of a car in the garage via MQTT. In addition you can monitor the Temperature and Humidity within your garage over MQTT as well. This project requires two ultrasonic sensors: one pointed at the garage door, and the other pointed at the normal location of the car. This allows the presence of the car to be detected even if the garage door is open.  
 
-The code covered in this repository utilises [Home Assistant's MQTT Cover Component](https://www.home-assistant.io/components/cover.mqtt/) and uses an ESP8266 microcontroller. There is a sample configuration in the repository
+The code covered in this repository utilises Home Assistant's [MQTT Cover Component](https://www.home-assistant.io/components/cover.mqtt/) and [MQTT Binary Sensor Component](https://www.home-assistant.io/components/binary_sensor.mqtt/). There is a sample configuration in the repository.
+
+It requires an ESP8266 microcontroller with sensors and a relay. 
 
 The code is based on DotNetDann's ESP-MQTT-GarageDoorSensor project (which took inspiration from GarHAge and OpenGarage). 
 
@@ -34,23 +36,23 @@ More information on OTA uploading can be found [here](http://esp8266.github.io/A
 - Breadboard (optional)
 
 #### Wiring Diagram
-![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/Wiring%20Diagram-RollerDoor.png?raw=true "Wiring Diagram")
+![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/master/Wiring%20Diagram-RollerDoor.png?raw=true "Wiring Diagram")
 
 
 #### Web page examples
-![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/webpagestatus1.png?raw=true "Webpage Status")
+![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/master/webpagestatus1.png?raw=true "Webpage Status")
 
-![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/webpagestatus2.png?raw=true "Webpage Status")
+![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/master/webpagestatus2.png?raw=true "Webpage Status")
 
-![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/webpagestatus3.png?raw=true "Webpage Status")
+![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/master/webpagestatus3.png?raw=true "Webpage Status")
 
-![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/webpagestatus4.png?raw=true "Webpage Status")
+![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/master/webpagestatus4.png?raw=true "Webpage Status")
 
 #### Example Home Assistant Configuration 
 
-[YAML Configuration](https://github.com/SmbKiwi/ESP-MQTT-HA-Garage-Door-Opener-with-Garage-Door-and-Car-Presence-Sensors-with-Temperature-Monitor/blob/master/Example%20Home%20Assistant%20Configuration.yaml)
+[YAML Configuration](https://github.com/SmbKiwi/GarDoor-Car/blob/master/Example%20Home%20Assistant%20Configuration.yaml)
 
-![alt text](https://github.com/SmbKiwi/ESP-MQTT-GarageDoorSensor/blob/master/HA-entities.png?raw=true "HA Example")
+![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/master/HA-entities.png?raw=true "HA Example")
 
 #### Sample MQTT commands
 Listen to MQTT commands
