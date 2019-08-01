@@ -10,6 +10,9 @@
       - PubSubClient
       - ArduinoJSON
 
+  By default a Active-Low relay is assumed. If you have a Active-High relay, you will need to change "digitalWrite(DOOR1_RELAY_PIN, HIGH);"
+  to "digitalWrite(DOOR1_RELAY_PIN, LOW);" and vice versa.
+  
   - Another like project https://hackaday.io/project/25090/instructions
   - Where this code was forked from https://github.com/DotNetDann/ESP-MQTT-GarageDoorSensor
 */
