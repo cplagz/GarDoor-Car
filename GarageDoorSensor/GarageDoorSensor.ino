@@ -17,7 +17,7 @@
   - Where this code was forked from https://github.com/DotNetDann/ESP-MQTT-GarageDoorSensor
 */
 
-//1.9R Change to use for a single garage door with seperate car detection using 2 ultrasonic sensors (Author: SmbKiwi)
+//1.10R Change to use for a single garage door with seperate car detection using 2 ultrasonic sensors (Author: SmbKiwi)
 
 // 1.8 Change pins and small clean
 // 1.7 Add ability to only close garage doors
@@ -28,7 +28,7 @@
 // ------------------------------
 // ---- all config in auth.h ----
 // ------------------------------
-#define VERSION F("v1.9R - GarRollDoor - https://github.com/SmbKiwi")
+#define VERSION F("v1.10R - GarRollDoor - https://github.com/SmbKiwi")
 
 #include <ArduinoJson.h> // Benoit Blanchon
 #include <ESP8266WiFi.h>
