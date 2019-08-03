@@ -7,17 +7,39 @@ mqtt:
   password: YOURPASSWORD
   
 sensor:
- - platform: mqtt
-   state_topic: "GarDoor/temperature"
-   name: "Garage Temperature"
-   qos: 0
-   unit_of_measurement: '°C'
+  - platform: mqtt
+    state_topic: "GarDoor/temperature"
+    name: "Garage Temperature"
+    qos: 0
+    unit_of_measurement: '°C'
 
- - platform: mqtt
-   state_topic: "GarDoor/humidity"
-   name: "Garage Humidity"
-   qos: 0
-   unit_of_measurement: '%'
+  - platform: mqtt
+    state_topic: "GarDoor/humidity"
+    name: "Garage Humidity"
+    qos: 0
+    unit_of_measurement: '%'
+   
+  - platform: mqtt
+    name: "Garage Door Distance" 
+    state_topic: "GarDoor/1/status"
+    unit_of_measurement: 'cm'
+    value_template: "{{value_json.distance}}"
+    availability_topic: "GarDoor/availability"
+    payload_available: "online"
+    payload_not_available: "offline"
+    icon: "mdi:garage"
+    json_attributes_topic: "GarDoor/1/status"
+   
+  - platform: mqtt
+    name: "Car Distance" 
+    state_topic: "GarDoor/2/status"
+    unit_of_measurement: 'cm'
+    value_template: "{{value_json.distance}}"
+    availability_topic: "GarDoor/availability"
+    payload_available: "online"
+    payload_not_available: "offline"
+    icon: "mdi:car"
+    json_attributes_topic: "GarDoor/2/status"
 
 binary_sensor:
   - platform: mqtt
@@ -38,8 +60,11 @@ binary_sensor:
     payload_on: "open"
     payload_off: "closed"
     availability_topic: "GarDoor/availability"
+    payload_available: "online"
+    payload_not_available: "offline"
     qos: 0
     device_class: opening
+    value_template: '{{value_json.status}}'
 
 cover:
   - platform: mqtt
