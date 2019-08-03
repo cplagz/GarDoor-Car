@@ -20,7 +20,7 @@ sensor:
     unit_of_measurement: '%'
    
   - platform: mqtt
-    name: "Garage Door Distance" #name of ESP8266 hardware sensor
+    name: "Garage Door Distance" 
     state_topic: "GarDoor/1/status"
     unit_of_measurement: 'cm'
     value_template: "{{value_json.distance}}"
@@ -31,7 +31,7 @@ sensor:
     json_attributes_topic: "GarDoor/1/status"
    
   - platform: mqtt
-    name: "Car Distance" #name of ESP8266 hardware sensor
+    name: "Car Distance" 
     state_topic: "GarDoor/2/status"
     unit_of_measurement: 'cm'
     value_template: "{{value_json.distance}}"
