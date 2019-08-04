@@ -1,4 +1,4 @@
-/* Add your keys & rename this file to auth.h */
+/* Add your keys & customise your settings in this file */
 
 #ifndef _AUTH_DETAILS
 #define _AUTH_DETAILS
