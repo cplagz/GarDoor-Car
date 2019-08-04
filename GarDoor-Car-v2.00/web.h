@@ -1,3 +1,4 @@
+
 String GetGaragePic(byte DoorState) {
   String imgString = F("<svg version='1.0' xmlns='http://www.w3.org/2000/svg' width='112pt' height='64pt' viewBox='0 0 225 135' preserveAspectRatio='xMidYMid meet'>");
 
@@ -59,7 +60,7 @@ void ServeWebClients()
   
   inString += F("<div id='div_basic'>");
 
-  // DOOR
+  // DOOR and CAR
   byte dst1 = getStateDoor(door1_lastDistanceValue);
   byte dst2 = getStateCar(door2_lastDistanceValue);
   inString += F("<h3 class='ui-bar ui-bar-a ui-corner-all'>Door</h3>");
@@ -119,7 +120,7 @@ void ServeWebClients()
   #if DHT_ENABLED == true
   byte tmp = dht.readTemperature();
   byte hum = dht.readHumidity();
-  inString += F("<tr><td><b>Temp: </b></td><td><label id='lbl_temp'>");
+  inString += F("<tr><td><b>Temp: </b></td><td><label id='lbl_temp' style='color:#f39c12;'>");
   if (DHT_TEMPERATURE_CELSIUS) {
       inString += String(tmp);
       inString += F(" &#176;C</label></td><td></td></tr>");
@@ -127,13 +128,13 @@ void ServeWebClients()
       inString += String(tmp* 1.8 + 32);
       inString += F(" &#176;F</label></td><td></td></tr>");
   }
-  inString += F("<tr><td><b>Humidity: </b></td><td><label id='lbl_hum'>");
+  inString += F("<tr><td><b>Humidity: </b></td><td><label id='lbl_hum' style='color:#3498db;'>");
   inString += String(hum);
   inString += F(" %</label></td><td></td></tr>");
   #endif
   
   inString += F("</table><br />");
-   
+
   inString += F("</div>");
 
   
@@ -141,7 +142,7 @@ void ServeWebClients()
   inString += F("<table cellpadding='2'>");
   inString += F("<tr><td colspan='2'>&nbsp;</td></tr>");
   
-  inString += F("<tr><td><b>WIFI SSID:</b></td><td><label id='lbl_rssi'>");
+  inString += F("<tr><td><b>WIFI SSID:</b></td><td><label id='lbl_ssid'>");
   inString += WIFI_SSID;
   inString += F("</label></td></tr>");
 
@@ -165,6 +166,22 @@ void ServeWebClients()
   inString += MQTT_SERVER;
   inString += F("</label></td></tr>");
   
+  inString += F("<tr><td><b>Garage Controller:</b></td><td><label id='lbl_rssi'>");
+  String currip = get_ip();
+  inString += currip;
+  inString += F("</label></td></tr>");
+
+  inString += F("<tr><td colspan='2'>&nbsp;</td></tr>");
+
+  inString += F("<tr><td><b>BLYNK Enabled:</b></td><td><label id='lbl_rssi'>");
+  if (BLYNK_ENABLED == true) {inString += F("On");}
+  if (BLYNK_ENABLED == false) {inString += F("Off");}
+  inString += F("</label></td></tr>");
+
+  inString += F("<tr><td><b>BLYNK Connected:</b></td><td><label id='lbl_rssi'>");
+  inString += blynkup;
+  inString += F("</label></td></tr>");  
+  
   inString += F("<tr><td colspan='2'>&nbsp;</td></tr>");
 
   inString += F("<tr><td><b>Relay Active Timeout:</b></td><td><label id='lbl_rssi'>");
@@ -187,14 +204,11 @@ void ServeWebClients()
   inString += F("</label></td></tr>");
   
   inString += F("<tr><td colspan='2'><input type='checkbox' id='cb2' ");
-  #if DOOR2_ENABLED == true
-    inString += F("checked");
-  #endif
+  inString += F("checked");
   inString += F(" disabled><label for='cb2'>");
   inString += CAR_ALIAS;
   inString += F("</label></td></tr>");
-  
-  
+    
   inString += F("<tr><td colspan='2'><input type='checkbox' id='cb4' ");
   #if DHT_ENABLED == true
     inString += F("checked");
