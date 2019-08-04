@@ -121,10 +121,8 @@ unsigned long timersysdata = 0;
 const int door_numValues = 10;
 int door1_lastDistanceValues[door_numValues];
 int door2_lastDistanceValues[door_numValues];
-// int door3_lastDistanceValues[door_numValues];
 int door1_lastDistanceValue = 0;
 int door2_lastDistanceValue = 0;
-// #int door3_lastDistanceValue = 0;
 
 char* birthMessage = "online";
 const char* lwtMessage = "offline";
