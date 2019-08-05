@@ -40,6 +40,17 @@ sensor:
     payload_not_available: "offline"
     icon: "mdi:car"
     json_attributes_topic: "GarDoor/2/status"
+    
+  - platform: mqtt
+    name: "Wifi GarDoor NodeMCUv2"
+    state_topic: "GarDoor/ESPtoMQTT"
+    unit_of_measurement: 'dB'
+    value_template: "{{value_json.rssi}}"
+    availability_topic: "GarDoor/availability"
+    payload_available: "online"
+    payload_not_available: "offline"
+    icon: "mdi:wifi"
+    json_attributes_topic: "GarDoor/ESPtoMQTT"
 
 binary_sensor:
   - platform: mqtt
@@ -65,6 +76,20 @@ binary_sensor:
     qos: 0
     device_class: opening
     value_template: '{{value_json.status}}'
+    
+  - platform: mqtt
+    name: "GarDoor Controller"
+    state_topic: "GarDoor/availability"
+    payload_on: "online"
+    payload_off: "offline"
+    device_class: connectivity
+  
+  - platform: mqtt
+    name: "GarDoor Blynk"
+    state_topic: "GarDoor/blynkavailability"
+    payload_on: "blynkon"
+    payload_off: "blynkoff"
+    device_class: connectivity
 
 cover:
   - platform: mqtt
@@ -84,3 +109,18 @@ cover:
     payload_not_available: "offline"
     device_class: garage
 
+automation:
+  #Make GarDoor Blynk connection unavailable if GarDoor becomes unavailable
+  - alias: 'GarDoor Blynk unavailable'
+    trigger:
+      platform: state
+      entity_id:  binary_sensor.gardoor_controller
+      from: 'on'
+      to: 'off'
+    action:
+      service: mqtt.publish
+      data:
+        topic: GarDoor/blynkavailability
+        payload: "blynkoff"
+        qos: 0
+        retain: true
