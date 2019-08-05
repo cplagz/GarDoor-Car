@@ -123,4 +123,14 @@ automation:
         topic: GarDoor/blynkavailability
         payload: "blynkoff"
         qos: 0
-        retain: true
+        retain: true        
+   
+  - alias: 'Update garage door/car state on startup'
+    trigger:
+      - platform: homeassistant
+        event: start
+    action:
+      - service: mqtt.publish
+        data:
+          topic: GarDoor/1/action
+          payload: "STATE"
