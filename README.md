@@ -53,7 +53,7 @@ GarDoor-Car can also connect (if enabled by the user) to a Blynk server. This en
 - [NodeMCU](https://www.aliexpress.com/item/32665100123.html) or other ESP8266-based microcontroller 
 - [2 x HC-SR04P Ultrasonic Sensors](https://www.aliexpress.com/item/32711959780.html) May also use HC-SR04 model
 - [5V 1 Channel Relay Board](https://www.gearbest.com/relays/pp_226384.html) Active-High or Active-Low supported
-- [DHT22 sensor](https://www.aliexpress.com/item/32899808141.html) (optional)  
+- [DHT22 module](https://www.aliexpress.com/item/32899808141.html) (optional)  
 - Electrical cable (two-conductor) to connect the relay to your garage door control panel 
 - Power source for NodeMCU: MicroUSB cable or 5V power supply  
 - Male-to-female (and Male-to-male if you use HC-SR04 model ultrasonic sensor and need to connect four components to 5v power) breadboard jumper wires (Dupont)
@@ -63,56 +63,56 @@ GarDoor-Car can also connect (if enabled by the user) to a Blynk server. This en
 #### Detailed Hardware
 
 1. ESP8266-based microcontroller
-I recommend the NodeMCU as GarDoor-Car was developed and is tested on it. Its advantages are:
+  I recommend the NodeMCU as GarDoor-Car was developed and is tested on it. Its advantages are:
 
--it comes with header pins already soldered so that it can plug directly into a solderless breadboard;
--its VIN (or VU on the LoLin NodeMCU v3 variant) port can power the 5v relay module and DHT22 sensor;
--it can be powered and programmed via MicroUSB;
--it has Reset and Flash buttons, making programming easy.
+  - it comes with header pins already soldered so that it can plug directly into a solderless breadboard;
+  - its VIN (or VU on the LoLin NodeMCU v3 variant) port can power the 5v relay module and DHT22 sensor;
+  - it can be powered and programmed via MicroUSB;
+  - it has Reset and Flash buttons, making programming easy.
 
-Accordingly, this guide is written with the NodeMCU in mind.
+  Accordingly, this guide is written with the NodeMCU in mind.
 
-But, GarDoor-Car should also work with the Adafruit HUZZAH, Wemos D1, or similar, though you may need to adjust the GPIO ports used by the sketch to match the ESP8266 ports that your microcontroller makes available.
+  But, GarDoor-Car should also work with the Adafruit HUZZAH, Wemos D1, or similar, though you may need to adjust the GPIO ports used by the   sketch to match the ESP8266 ports that your microcontroller makes available.
 
 2. Single 5v relay module
-A single 5v relay module makes setup easy: just plug jumper wires from the module's VCC, S, and GND pins to the NodeMCU. 
-Because the relay module is powered by 5v, its inputs can be triggered by the NodeMCU's GPIOs.
+  A single 5v relay module makes setup easy: just plug jumper wires from the module's VCC, S, and GND pins to the NodeMCU. 
+  Because the relay module is powered by 5v, its inputs can be triggered by the NodeMCU's GPIOs.
 
-GarDoor-Car will work with relay modules that are active-high or active-low; if using an active-low relay, be sure to set the relevant configuration parameter in auth.h, described below, and test thoroughly to be sure that your garage door opener(s) are not inadvertently triggered after a momentary power-loss.
+  GarDoor-Car will work with relay modules that are active-high or active-low; if using an active-low relay, be sure to set the relevant       configuration parameter in auth.h, described below, and test thoroughly to be sure that your garage door opener(s) are not inadvertently     triggered after a momentary power-loss.
 
 3. Two Ultrasonic Sensors
-GarDoor-Car will work with either the HC-SR04 or HC-SR04P model. The HC-SR04P uses 3.3v or 5v power, while the HC-SR04 requires 5v power. When using the HC-SR04P model (as the diagram below assumes), the maximum distance of the sensor is reduced slightly when using 3.3v power. For the purposes of this project, this won't affect the results of the GarDoor-Car. Thus either model can be used, and the HC-SR04P can be powered using 3.3v.  
+  GarDoor-Car will work with either the HC-SR04 or HC-SR04P model. The HC-SR04P uses 3.3v or 5v power, while the HC-SR04 requires 5v power.     When using the HC-SR04P model (as the diagram below assumes), the maximum distance of the sensor is reduced slightly when using 3.3v power.   For the purposes of this project, this won't affect the results of the GarDoor-Car. Thus either model can be used, and the HC-SR04P can be   powered using 3.3v.  
 
-While a HC-SR04P works using 3.3v power without any other changes to the design (see the diagram below), if using HC-SR04 sensors (which require you to connect them to the 5v VCC for power), a 1k Ω resistor will need to be used between the ECHO pin on each distance sensor and the related input pin on the NodeMCU. 
+  While a HC-SR04P works using 3.3v power without any other changes to the design (see the diagram below), if using HC-SR04 sensors (which     require you to connect them to the 5v VCC for power), a 1k Ω resistor will need to be used between the ECHO pin on each distance sensor and   the related input pin on the NodeMCU. 
 
 4. 5v MicroUSB power supply
-Power your NodeMCU via the same type of power supply used to charge Android phones or power a RaspberryPi. Powering the NodeMCU via MicroUSB is recommended since the relay module & DHT22 sensor can be powered via the NodeMCU VIN (or VU on the LoLin v3 variant) port.
+  Power your NodeMCU via the same type of power supply used to charge Android phones or power a RaspberryPi. Powering the NodeMCU via           MicroUSB is recommended since the relay module & DHT22 sensor can be powered via the NodeMCU VIN (or VU on the LoLin v3 variant) port.
 
 5. Solderless breadboard (400 tie-point or larger)
-The NodeMCU mounts to this breadboard nicely, leaving a few female ports next to each NodeMCU pin (important as the two ultrasonic sensors use the same trigger pin, and the relay and DHT22 sensor both use the 5v VIN power pin) making it easy to use male-to-female jumper wires to make connections from the NodeMCU to the relay module and the three sensors. This makes for a clean and solderless installation. Finally, these breadboards often also have an adhesive backing, making mounting in your project box easy.
+  The NodeMCU mounts to this breadboard nicely, leaving a few female ports next to each NodeMCU pin (important as the two ultrasonic sensors   use the same trigger pin, and the relay and DHT22 sensor both use the 5v VIN power pin) making it easy to use male-to-female jumper wires     to make connections from the NodeMCU to the relay module and the three sensors. This makes for a clean and solderless installation.           Finally, these breadboards often also have an adhesive backing, making mounting in your project box easy.
 
 You could also use male-to-male jumper wires to connect 5v/ground and/or 3.3v/ground NodeMCU pins to each set of outside power rails on the breadboard, and then connect the male end of the male-to-female jumper wires to provide power/ground to components using the rails.  
 
 6. A DHT22 module (optional)
-This sensor provides temperature/humidity readings to GarDoor-Car, but is optional and can be disabled in the auth.h file. The module verion (which is mounted on a board) is recommended, since the board includes a pull-up resister to reduce the output to 3.3v (the DHT22 is powered using 5v). If you use a DHT22 sensor (without a module board), you will need to use a 10k Ω resistor wired to the power input and the data pin of the DHT22 to act as a pull-up.   
+  This sensor provides temperature/humidity readings to GarDoor-Car, but is optional and can be disabled in the auth.h file. The module         verion (which is mounted on a board) is recommended, since the board includes a pull-up resister to reduce the output to 3.3v (the DHT22 is   powered using 5v). If you use a DHT22 sensor (without a module board), you will need to use a 10k Ω resistor wired to the power input and     the data pin of the DHT22 to act as a pull-up.   
 
 7. - 9. Miscellaneous parts
-To install GarDoor-Car, you will also require:
+  To install GarDoor-Car, you will also require:
 
--Long enough low voltage two-conductor electrical wire to make connections from the relay where GarDoor-Car is mounted to the garage door opener.
--Male-to-female breadboard jumper wires to make connections from the NodeMCU to the relay module (3 jumper wires required), the DHT22 (3 wires required), and the two ultrasonic sensors (4 wires required for each).
--A project box to hold the NodeMCU, the relay module , the DHT22 sensor module, and the two ultrasonic sensors. While the ultrasonic sensors can be mounted inside the same box as the nodeMCU, they will need to have unobstructed access outside the box to point at the garage door and car.  
+  - Long enough low voltage two-conductor electrical wire to make connections from the relay where GarDoor-Car is mounted to the garage door     opener.
+  - Male-to-female breadboard jumper wires to make connections from the NodeMCU to the relay module (3 jumper wires required), the DHT22 (3       wires required), and the two ultrasonic sensors (4 wires required for each).
+  - A project box to hold the NodeMCU, the relay module , the DHT22 sensor module, and the two ultrasonic sensors. While the ultrasonic           sensors can be mounted inside the same box as the nodeMCU, they will need to have unobstructed access outside the box to point at the         garage door and car.  
 
 #### Building GarDoor-Car
 
--Attach your NodeMCU to the middle (between the outside power rails) of the solderless breadboard at one end; the MicroUSB connector should be facing one of the short outside edges of the breadboard (the power rails are on the longer outside edges). Ensure that there are at least two female ports next to each NodeMCU pin on each side of the NodeMCU.
--Mount the solderless breadboard in your project box.
--Mount the relay module in your project box.
--Mount the DHT22 module in your project box (if required). You could insert the pins into the breadboard above the position of the NodeMCU so that the DHT22 stands up on top of the breadboard.
--Label your two HC-SR04P sensors as sensor 1 and sensor 2. Mount the two HC-SR04P sensors in your project box, ensuring there are holes for the front of the sensors to "see" the outside. Ensure that the direction you mount sensor 1 in will enable it to "see" the garage door once you position the box in its intended location in the garage. Also ensure that sensor 2 will be able to "see" the position of the car when the box is in the garage. You could mount the box above the garage pointing in a downward direction (if you have a roller door) or on the side of the garage wall.     
--Plug a jumper wire from VCC on the relay module to VIN / VU on the NodeMCU.
--Plug a jumper wire from GND on the relay module to GND on the NodeMCU.
--Plug a jumper wire from S on the relay module to D6 on the NodeMCU (or Arduino/ESP8266 GPI012).
+- Attach your NodeMCU to the middle (between the outside power rails) of the solderless breadboard at one end; the MicroUSB connector should be facing one of the short outside edges of the breadboard (the power rails are on the longer outside edges). Ensure that there are at least two female ports next to each NodeMCU pin on each side of the NodeMCU.
+- Mount the solderless breadboard in your project box.
+- Mount the relay module in your project box.
+- Mount the DHT22 module in your project box (if required). You could insert the pins into the breadboard above the position of the NodeMCU so that the DHT22 stands up on top of the breadboard.
+- Label your two HC-SR04P sensors as sensor 1 and sensor 2. Mount the two HC-SR04P sensors in your project box, ensuring there are holes for the front of the sensors to "see" the outside. Ensure that the direction you mount sensor 1 in will enable it to "see" the garage door once you position the box in its intended location in the garage. Also ensure that sensor 2 will be able to "see" the position of the car when the box is in the garage. You could mount the box above the garage pointing in a downward direction (if you have a roller door) or on the side of the garage wall.     
+- Plug a jumper wire from VCC on the relay module to VIN / VU on the NodeMCU.
+- Plug a jumper wire from GND on the relay module to GND on the NodeMCU.
+- Plug a jumper wire from S on the relay module to D6 on the NodeMCU (or Arduino/ESP8266 GPI012).
 
 
 Done!
