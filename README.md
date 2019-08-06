@@ -86,11 +86,15 @@ While a HC-SR04P works using 3.3v power without any other changes to the design 
 Power your NodeMCU via the same type of power supply used to charge Android phones or power a RaspberryPi. Powering the NodeMCU via MicroUSB is recommended since the relay module & DHT22 sensor can be powered via the NodeMCU VIN (or VU on the LoLin v3 variant) pin.
 
 #### 5. Solderless breadboard (400 tie-point or larger)
-The NodeMCU may be mounted in the center of this breadboard nicely, leaving a female port next to each NodeMCU pin on both sides. However for this project it is important that the side of the NodeMCU which contains pins D1, D2 etc, has two ports free. This is because the two ultrasonic sensors use the same trigger pin, and the relay and DHT22 sensor both use the 5v VIN power pin. If the NodeMCU is placed so that two ports are free on one side, this makes it easy to use male-to-female jumper wires to make connections from the NodeMCU to the relay module and the three sensors. This makes for a clean and solderless installation. Finally, these breadboards often also have an adhesive backing, making mounting in your project box easy.
+The NodeMCU may be mounted in the center of this breadboard nicely, leaving a female port next to each NodeMCU pin on both sides. However for this project it is important that the two ultrasonic sensors use the same trigger pin, and the relay and DHT22 sensor both use the 5v VIN power pin. 
 
-You could also use male-to-male jumper wires to connect 5v/ground and/or 3.3v/ground NodeMCU pins to each set of outside power rails on the breadboard, and then connect the male end of the male-to-female jumper wires for a relay/sensor's power and ground to a + (for power) or - (for ground) port on the appropriate 3.3V or 5V rail to provide power/ground to components using the rails.  
+To overcome this you could use male-to-male jumper wires. You would connect the 5v/ground and one set of 3.3v/ground NodeMCU pins to each set of outside power rails on the breadboard using male-to-male jumper wires. Then connect the male end of a male-to-female jumper wire for a relay/sensor's power and ground to a + (for power) or - (for ground) port on the appropriate 3.3V or 5V rail to provide power/ground to components using the rails.  
 
-You may also choose to mount the DHT22 and/or relay directly on the breadboard by inserting the pins vertically into ports above the NodeMCU. If do this you will require male-to-male jumper wires to connect the 3 ports of the DHT22 and 3 ports of the relay to the appropriate ports on the breadboard to link to the NodeMCU.  
+In the same way, you would connect the NodeMCU output to be used as the trigger (pin D5) to a port above the NodeMCU using a male-to-male jumper wire. Then you would connect the male end of the male-to-female jumper wires connected to the trig pin of each ultrasonic sensor, to two ports in the same line on the broadboard as the male end of the wire connected to pin D5 of the NodeMCU.  
+
+You may also choose to mount the DHT22 and/or relay modules directly on the breadboard by inserting their pins vertically into ports above the NodeMCU. If do this you will require male-to-male jumper wires to connect the 3 ports of the DHT22 and 3 ports of the relay to the appropriate ports on the breadboard to link to the NodeMCU's pins.  
+
+This makes for a clean and solderless installation. Finally, these breadboards often also have an adhesive backing, making mounting in your project box easy.
 
 #### 6. A DHT22 module (optional)
 This sensor provides temperature/humidity readings to GarDoor-Car, but is optional and can be disabled in the auth.h file. The module verion (which is mounted on a board) is recommended, since the board includes a pull-up resister to reduce the output to 3.3v (the DHT22 is powered using 5v). If you use a DHT22 sensor (without a module board), you will need to use a 10k Ω resistor wired to the power input and the data pin of the DHT22 to act as a pull-up.   
@@ -99,7 +103,8 @@ This sensor provides temperature/humidity readings to GarDoor-Car, but is option
 To install GarDoor-Car, you will also require:
 
 - Low voltage/current two-conductor electrical wire of the appropriate length to make connections from the relay where GarDoor-Car is mounted to the garage door opener.
-- Male-to-female breadboard jumper wires to make connections from the NodeMCU to the relay module (3 wires required), the DHT22 (3 wires required), and the two ultrasonic sensors (4 wires required for each). You may also require male-to-male jumper wires if you choose to use the outside power fails or insert the DHT22 or relay's pins vertically on the breadboard. 
+- Male-to-female breadboard jumper wires to make connections from the NodeMCU via the breadboard ports to the relay module (3 wires required), the DHT22 (3 wires required), and the two ultrasonic sensors (4 wires required for each). 
+- You will also require male-to-male jumper wires to use the outside power rails (4 wires) and to connect both ultrasonic sensors trig pins to the same NodeMCU pin (1 wire). If you choose to insert the DHT22 or relay's pins vertically on the breadboard, you will need further male-to-male jumper wires (up to 6 wires) instead of male-to-female wires.   
 - A project box to hold the NodeMCU, the relay module, the DHT22 sensor module (if required), and the two ultrasonic sensors. While the ultrasonic sensors can be mounted inside the same box as the nodeMCU, they will need to have unobstructed access outside the box to point at the garage door and car.  
 
 #### Building GarDoor-Car
@@ -108,23 +113,28 @@ See the wiring diagram below for an example of how the pins are wired up.
 
 - Attach your NodeMCU to the middle (between the outside power rails) of the solderless breadboard at one end; the MicroUSB connector should be facing one of the short outside edges of the breadboard (the power rails are on the longer outside edges). Ensure that there are at least two female ports next to each NodeMCU pin on each side of the NodeMCU.
 - Mount the solderless breadboard in your project box.
-- Mount the relay module in your project box.
+- Mount the relay module in your project box. You could insert lengthways the relay's three pins into the breadboard above the position of the NodeMCU so that the relay stands up on top of the breadboard. If you do this then you will use male-to-male jumper wires plugged into ports on the breadboard to connect the relay's pins to the NodeMCU. 
 - Mount the DHT22 module in your project box (if required). You could insert lengthways the DHT22's three pins into the breadboard above the position of the NodeMCU so that the DHT22 stands up on top of the breadboard. If you do this then you will use male-to-male jumper wires plugged into ports on the breadboard to connect the DHT22's pins to the NodeMCU.  
 - Label your two HC-SR04P sensors as sensor 1 (door) and sensor 2 (car). Mount the two HC-SR04P sensors in your project box, ensuring there are holes for the front of the sensors to "see" the outside. Ensure that the direction you mount sensor 1 in will enable it to "see" the garage door once you position the box in its intended location in the garage. Also ensure that sensor 2 will be able to "see" the position of the car when the box is in the garage. You could mount the box above the garage floor or on the side of the garage wall.     
-- Plug a jumper wire from VCC / + on the relay module to VIN / VU port on the NodeMCU (or the 5v + power rail).
-- Plug a jumper wire from GND / - on the relay module to GND port on the NodeMCU (or the 5v - power rail).
-- Plug a jumper wire from S on the relay module to D6 port on the NodeMCU (or Arduino/ESP8266 GPI012).
-- Plug a jumper wire from + on the DHT22 module to VIN / VU port on the NodeMCU (or the 5v + power rail).
-- Plug a jumper wire from - on the DHT22 module to GND port on the NodeMCU (or the 5v - power rail).
-- Plug a jumper wire from Data on the DHT22 module to D7 port on the NodeMCU (or Arduino/ESP8266 GPI013).
-- Plug a jumper wire from VCC on the HC-SR04P sensor 1 module to 3.3V port on the NodeMCU (or the 3.3v + power rail).
-- Plug a jumper wire from GND on the HC-SR04P sensor 1 to GND port on the NodeMCU (or the 3.3v - power rail).
-- Plug a jumper wire from Trig on the HC-SR04P sensor 1 to D5 port on the NodeMCU (or Arduino/ESP8266 GPI014).
-- Plug a jumper wire from Echo on the HC-SR04P sensor 1 to D2 port on the NodeMCU (or Arduino/ESP8266 GPI04).
-- Plug a jumper wire from VCC on the HC-SR04P sensor 2 module to 3.3V port on the NodeMCU (or the 3.3v + power rail).
-- Plug a jumper wire from GND on the HC-SR04P sensor 2 to GND port on the NodeMCU (or the 3.3v - power rail).
-- Plug a jumper wire from Trig on the HC-SR04P sensor 2 to D5 port on the NodeMCU (or Arduino/ESP8266 GPI014).
-- Plug a jumper wire from Echo on the HC-SR04P sensor 2 to D1 port on the NodeMCU (or Arduino/ESP8266 GPI05).
+- Plug a m-to-m jumper wire from the VIN / VU port on the NodeMCU into the + power rail on one side of the breadboard.
+- Plug a m-to-m jumper wire from the GND port (near the VIN / VU port) on the NodeMCU into the - power rail on one side of the breadboard. 
+- Plug a m-to-m jumper wire from a 3.3v port on the NodeMCU into the + power rail on the other side of the breadboard.
+- Plug a m-to-m jumper wire from the GND port (near the 3.3v port you have used) on the NodeMCU into the - power rail on the other side of the breadboard. 
+- Plug a f-to-m jumper wire from VCC / + on the relay module to the 5v + power rail.
+- Plug a f-to-m jumper wire from GND / - on the relay module to the 5v - power rail.
+- Plug a f-to-m jumper wire from S on the relay module to port D6 on the NodeMCU (or Arduino/ESP8266 GPI012).
+- Plug a f-to-m jumper wire from + on the DHT22 module to the 5v + power rail.
+- Plug a f-to-m jumper wire from - on the DHT22 module to the 5v - power rail.
+- Plug a f-to-m jumper wire from Data on the DHT22 module to D7 port on the NodeMCU (or Arduino/ESP8266 GPI013).
+- Plug a m-to-m jumper wire from the D5 port (or Arduino/ESP8266 GPI014) of the NodeMCU into a port on a spare line above the NodeMCU on the breadboard. 
+- Plug a f-to-m jumper wire from VCC on the HC-SR04P sensor 1 module to the 3.3v + power rail.
+- Plug a f-to-m jumper wire from GND on the HC-SR04P sensor 1 module to the 3.3v - power rail.
+- Plug a f-to-m jumper wire from Trig on the HC-SR04P sensor 1 module to a port on the same line as the other end of the wire connected to D5 of the NodeMCU is plugged into.
+- Plug a f-to-m jumper wire from Echo on the HC-SR04P sensor 1 module to D2 port on the NodeMCU (or Arduino/ESP8266 GPI04).
+- Plug a f-to-m jumper wire from VCC on the HC-SR04P sensor 2 module to the 3.3v + power rail.
+- Plug a f-to-m jumper wire from GND on the HC-SR04P sensor 2 module to the 3.3v - power rail.
+- Plug a f-to-m jumper wire from Trig on the HC-SR04P sensor 2 module to a port on the same line as the other end of the wire connected to D5 of the NodeMCU is plugged into.
+- Plug a f-to-m jumper wire from Echo on the HC-SR04P sensor 2 module to D1 port on the NodeMCU (or Arduino/ESP8266 GPI05).
 
 Done!
 
@@ -161,14 +171,17 @@ If you wish to get up and running easily, these are the only settings you need t
 -WIFI_SSID
 -WIFI_PASSWORD
 -MQTT_SERVER
--MQTT_USER and MQTT_PASSWORD (only if you use authentication on your MQTT Broker
+-MQTT_USER and MQTT_PASSWORD (only if you use authentication on your MQTT Broker)
 -MQTT_PORT (only if you use a non-default port)
 -OTApassword (set your own password for this)
 -BlynkAuthToken (unless you disable Blynk)
 -ULTRASONIC_DIST_MAX_CLOSE
 -ULTRASONIC_DIST_MAX_CAR
 -RELAY_ACTIVE_TYPE
--
+-DHT_ENABLED (if using a DHT22)
+-DHT_TEMPERATURE_CELSIUS (if using a DHT22 and you use fahrenheit)
+
+Important!! After making any desired changes save the auth.h file. 
 
 *IMPORTANT: No modification of the sketch code in GarDoor-Car-Vx.xx.ino is necessary (or advised, unless you are confident you know what you are doing and are prepared for things to break unexpectedly).*
 
@@ -304,57 +317,53 @@ The ESP8266 GPIO pin connected to the relay signal pin which causes the relay to
 
 DOOR1_ECHO_PIN 4
 
+The ESP8266 GPIO pin that receives the echo pin output of sensor 1 to measure the distance from the sensor pointed towards the garage door. Must be a number. (Default: 4) (which is D2 on the NodeMCU)
 
+DOOR1_LIMIT_RELAY_CLOSE
 
-
+Set to true to prevent the relay from opening the garage door (only close will work). Set to false to be able to use the relay to both open and close the door. (Default: false)
 
 **Car Parameters**
 
-DOOR2_ENABLED false
+CAR_ALIAS "name"
 
-Set to true to enable GarHAge to control/monitor Door 2. Set to false to disable Door 2. (Default: false)
+The alias to be used for the car in serial messages, MQTT topic and webpage. Must be placed within quotation marks. (Default: Car)
 
-DOOR2_ALIAS "Door 2"
+MQTT_CAR_STATUS_TOPIC WIFI_HOSTNAME "mqtt-topic"
 
-The alias to be used for Door 2 in serial messages. Must be placed within quotation marks. (Default: Door 2)
+The Mqtt broker topic GarDoor-Car will publish the Car's occupied status to. Must be placed within quotation marks. (Default: /2/status)
 
-MQTT_DOOR2_ACTION_TOPIC "garage/door/2/action"
+DOOR1_ECHO_PIN 5
 
-The topic GarHAge will subscribe to for action commands for Door 2. Must be placed within quotation marks. (Default: garage/door/2/action)
-
-MQTT_DOOR2_STATUS_TOPIC "garage/door/2/status"
-
-The topic GarHAge will publish Door 2's status to. Must be placed within quotation marks. (Default: garage/door/2/status)
-
-DOOR2_OPEN_PIN D1
-
-The GPIO pin connected to the relay that is connected to Door 2's garage door opener's open terminals. (Default: NodeMCU D1 / Arduino 5)
-
-DOOR2_CLOSE_PIN D1
-
-The GPIO pin connected to the relay that is connected to Door 2's garage door opener's close terminals. If your garage door opener is like most (all?), the same terminals control open and close via a momentary connection of the terminals. In this case, set DOOR2_CLOSE_PIN and DOOR2_OPEN_PIN to the same pin. (Default: NodeMCU D1 / Arduino 5)
-
-DOOR2_STATUS_PIN D6
-
-The GPIO pin connected to the reed/magnetic switch attached to Door 2. (Default: NodeMCU D6 / Arduino 12)
-
-DOOR2_STATUS_SWITCH_LOGIC "NO"
-
-The type of reed/magnetic switch used for Door 2. Must be placed within quotation marks. Set to "NO for normally-open. Set to "NC" for normally-closed. (Default: NO)
-
+The ESP8266 GPIO pin that receives the echo pin output of sensor 2 to measure the distance from the sensor pointed towards the car's normal location. Must be a number. (Default: 5) (which is D1 on the NodeMCU)
 
 **DHT Parameters**
 
+
+
+DHT_ENABLED true
+DHT_PIN 13 // D7 on ESP8266
+DHT_TYPE DHT22 // or: DHT21 or DHT22
+MQTT_TEMPERATURE_TOPIC WIFI_HOSTNAME "/temperature"
+MQTT_HUMIDITY_TOPIC WIFI_HOSTNAME "/humidity"
+DHT_PUBLISH_INTERVAL 300  // Number of seconds between each temperature/humidity reading and publish to MQTT 
+DHT_TEMPERATURE_CELSIUS true  //Use celsius (true) or fahrenheit (false)
+DHT_TEMPERATURE_ALIAS "Garage Temperature"  
+DHT_HUMIDITY_ALIAS "Garage Humidity"
  
- 
- 
- 
+
  
   
 
 #### 4. Upload the sketch to your NodeMCU / microcontroller
 
-If using the NodeMCU, connect it to your computer via MicroUSB; press and hold the reset button on the NodeMCU, press and hold the Flash button on the NodeMCU, then release the Reset button. Select Sketch - Upload in the Arduino IDE.
+Ensure that the Auduino IDE is running and the sketch is loaded and configured. If using the NodeMCU, connect it to your computer via MicroUSB. The NodeMCU will connect to a virtual COM port within the Auduino IDE.   
+
+-TO DO: List settings for Generic ESP8266 Module board before uploading. 
+
+There are two uploads methods you can use:
+- xxx (to add)
+- Press and hold the reset button on the NodeMCU, press and hold the Flash button on the NodeMCU, then release the Reset button. Select Sketch - Upload in the Arduino IDE.
 
 If using a different ESP8266 microcontroller, follow that device's instructions for putting it into flashing/programming mode.
 
@@ -362,16 +371,16 @@ If using a different ESP8266 microcontroller, follow that device's instructions 
 
 Open the Serial Monitor via Tools - Serial Monitor. Reset your microcontroller. If all is working correctly, you should see something similar to the following messages:
 
-Starting GarHAge...
-Relay mode: Active-High
+Starting GarDoor-Car...
 
 Connecting to your-wifi-ssid.. WiFi connected - IP address: 192.168.1.100
-Attempting MQTT connection...Connected!
-Publishing birth message "online" to GarHAge/availability...
-Subscribing to garage/door/1/action...
-Subscribing to garage/door/2/action...
-Door 1 closed! Publishing to garage/door/1/status...
-Door 2 closed! Publishing to garage/door/2/status...
+Attempting MQTT connection...Connected
+Publishing birth message "online" to GarDoor/availability...
+Attempting BLYNK connection...Connected!
+Publishing message "blynkon" to GarDoor/blynkavailability...
+Subscribing to GarDoor/1/action...
+Door closed! Publishing to GarDoor/1/status...
+Car Absent! Publishing to GarDoor/2/status...
 
 If you receive these (or similar) messages, all appears to be working correctly. 
 
@@ -383,7 +392,9 @@ Make sure the Blynk project is running (in the project there is a triangle-shape
 
 Logon onto your router (or device/server) that runs your DHCP service. Reserve the IP address of the GarDoor-Car device (also known as a DHCP static binding). This ensures that GarDoor-Car always uses the same IP address when it reboots. This makes it easier to open the webpage or upload a new sketch using Arduino OTA.  
 
-Disconnect GarHAge from your computer and prepare to install in your garage.
+Disconnect GarDoor-Car from your computer and prepare to install it in your garage.
+
+
 
 
 #### OTA Uploading
@@ -413,6 +424,7 @@ More information on OTA uploading can be found [here](http://esp8266.github.io/A
 
 
 #### Sample MQTT commands
+
 Listen to MQTT commands
 > mosquitto_sub -h 172.17.0.1 -t '#'
 
