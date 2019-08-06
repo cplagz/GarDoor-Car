@@ -145,7 +145,7 @@ You will modify the configuration parameters and upload the sketch to the NodeMC
 
 #### 2. Install Blynk App and Project and get Token
 
-- Install the Blynk app on your phone by finding the Blynk app in your app store ([Android](https://play.google.com/store/apps/details?id=cc.blynk&hl=en_US) [Apple](https://apps.apple.com/us/app/blynk-iot-for-arduino-esp32/id808760481) and installing it.
+- Install the Blynk app on your phone by finding the Blynk app in your app store ([Android](https://play.google.com/store/apps/details?id=cc.blynk&hl=en_US) and [Apple iOS](https://apps.apple.com/us/app/blynk-iot-for-arduino-esp32/id808760481) and installing it.
 - Run the Blynk app, and create an account (if you don't already have one). 
 - In the Blynk app find the menu option to scan a QR code, click it and then scan the QR code that’s located [here](https://github.com/OpenGarage/OpenGarage-Firmware/blob/master/OGBlynkApp/og_blynk_1.1.png) (OpenGarage Project for Blynk App). If you have just created a new Blynk account you will have enough energy credits to use the project in the app for free. If you already have other project(s) in your Blynk account, you may need to purchase further energy credits to use the OpenGarage project in the app.  
 - Once the project is scanned, go to the Project Settings, and copy or email the Blynk authorisation token to yourself. This is the token you will need to put into the auth.h file in step 3 below.
@@ -280,9 +280,9 @@ RELAY_ACTIVE_TYPE HIGH
 
 Set to LOW if using an active-low relay module. Set to HIGH if using an active-high relay module. (Default: HIGH)
 
-DOOR_TRIG_PIN 8266_pin_identifier
+DOOR_TRIG_PIN 14
 
-The ESP8266 GPIO pin that triggers the two ultrasonic sensors to determine the distance to an object and output the results on their Echo pins. Must be a number. (Default: 14)  (which is D5 on the NodeMCU)
+The ESP8266 GPIO pin that triggers the two ultrasonic sensors to determine the distance to an object and output the results on their Echo pins. Must be a number. (Default: 14) (which is D5 on the NodeMCU)
 
 **Door 1 Parameters**
 
@@ -298,26 +298,15 @@ MQTT_DOOR1_STATUS_TOPIC WIFI_HOSTNAME "mqtt-topic"
 
 The Mqtt broker topic GarDoor-Car will publish Door 1's (garage door) status to. Must be placed within quotation marks. (Default: /1/status)
 
+DOOR1_RELAY_PIN 12
+
+The ESP8266 GPIO pin connected to the relay signal pin which causes the relay to "close" allowing current to flow. The relay is in turn connected to the garage door opener's terminals, using either the NO (normally open) or NC (normally close) connector plus the common connector. This assumes that the same terminals control open and close via a momentary connection of the terminals, which most garage door opener's do. (Default: 12) (which is D6 on the NodeMCU)
+
+DOOR1_ECHO_PIN 4
 
 
 
 
-
-DOOR1_OPEN_PIN D2
-
-The GPIO pin connected to the relay that is connected to Door 1's garage door opener's open terminals. (Default: NodeMCU D2 / Arduino 4)
-
-DOOR1_CLOSE_PIN D2
-
-The GPIO pin connected to the relay that is connected to Door 1's garage door opener's close terminals. If your garage door opener is like most (all?), the same terminals control open and close via a momentary connection of the terminals. In this case, set DOOR1_CLOSE_PIN and DOOR1_OPEN_PIN to the same pin. (Default: NodeMCU D2 / Arduino 4)
-
-DOOR1_STATUS_PIN D5
-
-The GPIO pin connected to the reed/magnetic switch attached to Door 1. (Default: NodeMCU D5 / Arduino 14)
-
-DOOR1_STATUS_SWITCH_LOGIC "NO"
-
-The type of reed/magnetic switch used for Door 1. Must be placed within quotation marks. Set to "NO for normally-open. Set to "NC" for normally-closed. (Default: NO)
 
 **Car Parameters**
 
