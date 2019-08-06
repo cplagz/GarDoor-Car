@@ -439,6 +439,8 @@ HA configuration examples are shown in the yaml file in this repo (click the lin
 
 ![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/HA-entities2.png?raw=true "HA Example")
 
+A status update from GarDoor-Car can be triggered by pressing the stop button (shown in the figure above) for the door in the HA GUI. 
+
 ### Web page Examples
 
 In a browser, enter the IP address w.x.y.z of the GarDoor-Car in the address bar. You can monitor the garage door, car, temperature, humidity and view some of the settings (see the figures below). 
