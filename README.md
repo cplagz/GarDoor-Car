@@ -86,7 +86,7 @@ While a HC-SR04P works using 3.3v power without any other changes to the design 
 Power your NodeMCU via the same type of power supply used to charge Android phones or power a RaspberryPi. Powering the NodeMCU via MicroUSB is recommended since the relay module & DHT22 sensor can be powered via the NodeMCU VIN (or VU on the LoLin v3 variant) pin.
 
 #### 5. Solderless breadboard (400 tie-point or larger)
-The NodeMCU mounts to this breadboard nicely, leaving a few female ports next to each NodeMCU pin on both sides (important as the two ultrasonic sensors use the same trigger pin, and the relay and DHT22 sensor both use the 5v VIN power pin) making it easy to use male-to-female jumper wires to make connections from the NodeMCU to the relay module and the three sensors. This makes for a clean and solderless installation. Finally, these breadboards often also have an adhesive backing, making mounting in your project box easy.
+The NodeMCU may be mounted in the center of this breadboard nicely, leaving a female port next to each NodeMCU pin on both sides. However for this project it is important that the side of the NodeMCU which contains pins D1, D2 etc, has two ports free. This is because the two ultrasonic sensors use the same trigger pin, and the relay and DHT22 sensor both use the 5v VIN power pin. If the NodeMCU is placed so that two ports are free on one side, this makes it easy to use male-to-female jumper wires to make connections from the NodeMCU to the relay module and the three sensors. This makes for a clean and solderless installation. Finally, these breadboards often also have an adhesive backing, making mounting in your project box easy.
 
 You could also use male-to-male jumper wires to connect 5v/ground and/or 3.3v/ground NodeMCU pins to each set of outside power rails on the breadboard, and then connect the male end of the male-to-female jumper wires for a relay/sensor's power and ground to a + (for power) or - (for ground) port on the appropriate 3.3V or 5V rail to provide power/ground to components using the rails.  
 
@@ -155,7 +155,20 @@ You will modify the configuration parameters and upload the sketch to the NodeMC
 
 #### 3. Load the sketch in the Arduino IDE and modify the user parameters in auth.h
 
-Download the files from this repo to your computer, and open the GarDoor-Car-Vx.xx.ino file from the folder. GarDoor-Car's configuration parameters are found in auth.h. Select the auth.h tab in the Arduino IDE. This section describes the configuration parameters and their permitted values.
+Download the files from this repo to your computer, and open the GarDoor-Car-Vx.xx.ino file from the folder. GarDoor-Car's configuration parameters are found in auth.h. Select the auth.h tab in the Arduino IDE. This section describes the configuration settings and parameters and their permitted values. There are some settings that you must set, while others can be left as they are unless you have a specific reason to change them. 
+
+If you wish to get up and running easily, these are the only settings you need to set:
+-WIFI_SSID
+-WIFI_PASSWORD
+-MQTT_SERVER
+-MQTT_USER and MQTT_PASSWORD (only if you use authentication on your MQTT Broker
+-MQTT_PORT (only if you use a non-default port)
+-OTApassword (set your own password for this)
+-BlynkAuthToken (unless you disable Blynk)
+-ULTRASONIC_DIST_MAX_CLOSE
+-ULTRASONIC_DIST_MAX_CAR
+-RELAY_ACTIVE_TYPE
+-
 
 *IMPORTANT: No modification of the sketch code in GarDoor-Car-Vx.xx.ino is necessary (or advised, unless you are confident you know what you are doing and are prepared for things to break unexpectedly).*
 
