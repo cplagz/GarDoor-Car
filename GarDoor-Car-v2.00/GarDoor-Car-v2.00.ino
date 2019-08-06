@@ -11,16 +11,15 @@
   To use this code you will need the following dependencies:
 
   - Support for the ESP8266 boards.
-        - You can add it to the board manager by going to File -> Preference and pasting http://arduino.esp8266.com/stable/package_esp8266com_index.json into the Additional Board Managers URL field.
-        - Next, download the ESP8266 dependencies by going to Tools -> Board -> Board Manager and searching for ESP8266 and installing it.
+      - You can add it to the board manager by going to File -> Preference and pasting http://arduino.esp8266.com/stable/package_esp8266com_index.json into the Additional Board Managers URL field.
+      - Next, download the ESP8266 dependencies by going to Tools -> Board -> Board Manager and searching for ESP8266 and installing it.
 
-  - You will also need to download the follow libraries by going to Sketch -> Include Libraries -> Manage Libraries
+  - You will also need to download the following libraries by going to Sketch -> Include Libraries -> Manage Libraries
       - NewPing
-      - PubSubClient
-      - ArduinoJSON
+      - PubSubClient     
       - Blynk
 
-   This project is based on DotNetDann's ESP-MQTT-GarageDoorSensor, but has been modified and upgraded by SmbKiwi. 
+   This project is based on DotNetDann's ESP-MQTT-GarageDoorSensor, but has been modified and expanded by SmbKiwi. 
    This code was forked from https://github.com/DotNetDann/ESP-MQTT-GarageDoorSensor
 
    Inspiration for the addition of Blynk came from the OpenGarage project.
@@ -86,16 +85,16 @@
 /**************************************** GLOBALS ***************************************/
 
 char* blynkup = "no"; // For displaying Blynk connection status in webpage
-//if Blynk is enabled then initialise
-#if BLYNK_ENABLED == true
-  char auth[] = BlynkAuthToken;
-  BlynkTimer timer;
-  bool curr_cloud_access_en() {
+char auth[] = BlynkAuthToken;
+bool curr_cloud_access_en() {
     if((unsigned)strlen(auth)==32) {
       return true;
     }
     return false;
   }
+//if Blynk is enabled then initialise
+#if BLYNK_ENABLED == true
+  BlynkTimer timer;
   #define BLYNK_PIN_DOOR  V0
   #define BLYNK_PIN_RELAY V1
   #define BLYNK_PIN_LCD   V2
@@ -196,7 +195,9 @@ void garagestillopen(int currdoorstate) {
             String endmess = " minutes";
             String doornotify = "";
             doornotify = garmess + minsmess + endmess;  // put the message together
-            perform_notify(doornotify); // notify via Blynk app how many minutes door has been open           
+            #if BLYNK_ENABLED == true
+            perform_notify(doornotify); // notify via Blynk app how many minutes door has been open
+            #endif
             n_opendoor = n_opendoor + 1;  // increment to check for a further 15 minute later next time
           }                 
         }
