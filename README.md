@@ -159,27 +159,27 @@ You will modify the configuration parameters and upload the sketch to the NodeMC
 - Run the Blynk app, and create an account (if you don't already have one). 
 - In the Blynk app find the menu option to scan a QR code, click it and then scan the QR code that’s located [here](https://github.com/OpenGarage/OpenGarage-Firmware/blob/master/OGBlynkApp/og_blynk_1.1.png) (OpenGarage Project for Blynk App). If you have just created a new Blynk account you will have enough energy credits to use the project in the app for free. If you already have other project(s) in your Blynk account, you may need to purchase further energy credits to use the OpenGarage project in the app.  
 - Once the project is scanned, go to the Project Settings, and copy or email the Blynk authorisation token to yourself. This is the token you will need to put into the auth.h file in step 3 below.
--You can configure the project in the app, such as changing the name of the button, but DO NOT change the virtual pin numbers for any button or widget (V1, V2 etc).  
+- You can configure the project in the app, such as changing the name of the button, but DO NOT change the virtual pin numbers for any button or widget (V1, V2 etc).  
 
-*NOTE: You can logon to the same Blynk account on more than one phone. If you do this on other family members phones, they can use the same project in the app to control the same GarDoor-Car. 
+*NOTE: You can logon to the same Blynk account on more than one phone. If you do this on other family members phones, they can use the same project in the app to control the same GarDoor-Car.* 
 
 #### 3. Load the sketch in the Arduino IDE and modify the user parameters in auth.h
 
 Download the files from this repo to your computer, and open the GarDoor-Car-Vx.xx.ino file from the folder. GarDoor-Car's configuration parameters are found in auth.h. Select the auth.h tab in the Arduino IDE. This section describes the configuration settings and parameters and their permitted values. There are some settings that you must set, while others can be left as they are unless you have a specific reason to change them. 
 
 If you wish to get up and running easily, these are the only settings you need to set:
--WIFI_SSID
--WIFI_PASSWORD
--MQTT_SERVER
--MQTT_USER and MQTT_PASSWORD (only if you use authentication on your MQTT Broker)
--MQTT_PORT (only if you use a non-default port)
--OTApassword (set your own password for this)
--BlynkAuthToken (unless you disable Blynk)
--ULTRASONIC_DIST_MAX_CLOSE
--ULTRASONIC_DIST_MAX_CAR
--RELAY_ACTIVE_TYPE
--DHT_ENABLED (if using a DHT22)
--DHT_TEMPERATURE_CELSIUS (if using a DHT22 and you use fahrenheit)
+- WIFI_SSID
+- WIFI_PASSWORD
+- MQTT_SERVER
+- MQTT_USER and MQTT_PASSWORD (only if you use authentication on your MQTT Broker)
+- MQTT_PORT (only if you use a non-default port)
+- OTApassword (set your own password for this)
+- BlynkAuthToken (unless you disable Blynk)
+- ULTRASONIC_DIST_MAX_CLOSE
+- ULTRASONIC_DIST_MAX_CAR
+- RELAY_ACTIVE_TYPE
+- DHT_ENABLED (if using a DHT22)
+- DHT_TEMPERATURE_CELSIUS (if using a DHT22 and you use fahrenheit)
 
 Important!! After making any desired changes save the auth.h file. 
 
