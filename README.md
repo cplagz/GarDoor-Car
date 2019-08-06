@@ -56,7 +56,7 @@ GarDoor-Car can also connect (if enabled by the user) to a Blynk server. This en
 - [DHT22 module](https://www.aliexpress.com/item/32899808141.html) (optional)  
 - Electrical cable (two-conductor) to connect the relay to your garage door control panel 
 - Power source for NodeMCU: MicroUSB cable or 5V power supply  
-- Male-to-female (and Male-to-male if you use HC-SR04 model ultrasonic sensor and need to connect four components to 5v power) breadboard jumper wires (Dupont)
+- Male-to-female (and Male-to-male if you use HC-SR04 model ultrasonic sensors and need to connect four components to 5v power using the breadboard power rails) breadboard jumper wires (Dupont)
 - Breadboard 400 tie-point or larger
 - Project box or case (optional)
 
@@ -70,11 +70,10 @@ I recommend the NodeMCU as GarDoor-Car was developed and is tested on it. Its ad
 - it can be powered and programmed via MicroUSB;
 - it has Reset and Flash buttons, making programming easy.
 
-Accordingly, this guide is written with the NodeMCU in mind. But, GarDoor-Car should also work with the Adafruit HUZZAH, Wemos D1,                                                                                           or similar, though you may need to adjust the GPIO ports used by the sketch to match the ESP8266 ports that your microcontroller makes available.
+Accordingly, this guide is written with the NodeMCU in mind. But, GarDoor-Car should also work with the Adafruit HUZZAH, Wemos D1, or similar, though you may need to adjust the GPIO ports used by the sketch to match the ESP8266 ports that your microcontroller makes available.
 
 #### 2. Single 5v relay module
-A single 5v relay module makes setup easy: just plug jumper wires from the module's VCC, S, and GND pins to the NodeMCU. 
-Because the relay module is powered by 5v, its inputs can be triggered by the NodeMCU's GPIOs.
+A single 5v relay module makes setup easy: just plug jumper wires from the module's VCC, S, and GND pins to the NodeMCU. Because the relay module is powered by 5v, its inputs can be triggered by the NodeMCU's GPIOs.
 
 GarDoor-Car will work with relay modules that are active-high or active-low; if using an active-low relay, be sure to set the relevant configuration parameter in auth.h, described below, and test thoroughly to be sure that your garage door opener(s) are not inadvertently triggered after a momentary power-loss.
 
@@ -84,14 +83,14 @@ GarDoor-Car will work with either the HC-SR04 or HC-SR04P model. The HC-SR04P ca
 While a HC-SR04P works using 3.3v power without any other changes to the design (see the wiring diagram below), if using HC-SR04 sensors (which require you to connect them to the 5v VCC for power), a 1k Ω resistor will need to be used between the ECHO pin on each distance sensor and the related input pin on the NodeMCU. 
 
 #### 4. 5v MicroUSB power supply
-Power your NodeMCU via the same type of power supply used to charge Android phones or power a RaspberryPi. Powering the NodeMCU via           MicroUSB is recommended since the relay module & DHT22 sensor can be powered via the NodeMCU VIN (or VU on the LoLin v3 variant) pin.
+Power your NodeMCU via the same type of power supply used to charge Android phones or power a RaspberryPi. Powering the NodeMCU via MicroUSB is recommended since the relay module & DHT22 sensor can be powered via the NodeMCU VIN (or VU on the LoLin v3 variant) pin.
 
 #### 5. Solderless breadboard (400 tie-point or larger)
 The NodeMCU mounts to this breadboard nicely, leaving a few female ports next to each NodeMCU pin on both sides (important as the two ultrasonic sensors use the same trigger pin, and the relay and DHT22 sensor both use the 5v VIN power pin) making it easy to use male-to-female jumper wires to make connections from the NodeMCU to the relay module and the three sensors. This makes for a clean and solderless installation. Finally, these breadboards often also have an adhesive backing, making mounting in your project box easy.
 
 You could also use male-to-male jumper wires to connect 5v/ground and/or 3.3v/ground NodeMCU pins to each set of outside power rails on the breadboard, and then connect the male end of the male-to-female jumper wires for a relay/sensor's power and ground to a + (for power) or - (for ground) port on the appropriate 3.3V or 5V rail to provide power/ground to components using the rails.  
 
-You may also choose to mount the DHT22 and/or relay directly on the breadboard by inserting the pins vertically into ports above the NodeMCU. If do this you will require male-to-male jumper wires to connect the 3 ports for the DHT22 and relay to the appropriate ports on the breadboard to link to the NodeMCU.  
+You may also choose to mount the DHT22 and/or relay directly on the breadboard by inserting the pins vertically into ports above the NodeMCU. If do this you will require male-to-male jumper wires to connect the 3 ports of the DHT22 and 3 ports of the relay to the appropriate ports on the breadboard to link to the NodeMCU.  
 
 #### 6. A DHT22 module (optional)
 This sensor provides temperature/humidity readings to GarDoor-Car, but is optional and can be disabled in the auth.h file. The module verion (which is mounted on a board) is recommended, since the board includes a pull-up resister to reduce the output to 3.3v (the DHT22 is powered using 5v). If you use a DHT22 sensor (without a module board), you will need to use a 10k Ω resistor wired to the power input and the data pin of the DHT22 to act as a pull-up.   
@@ -146,12 +145,17 @@ You will modify the configuration parameters and upload the sketch to the NodeMC
 
 #### 2. Install Blynk App and Project and get Token
 
+- Install the Blynk app on your phone by finding the Blynk app in your app store ([Android](https://play.google.com/store/apps/details?id=cc.blynk&hl=en_US) [Apple](https://apps.apple.com/us/app/blynk-iot-for-arduino-esp32/id808760481) and installing it.
+- Run the Blynk app, and create an account (if you don't already have one). 
+- In the Blynk app find the menu option to scan a QR code, click it and then scan the QR code that’s located [here](https://github.com/OpenGarage/OpenGarage-Firmware/blob/master/OGBlynkApp/og_blynk_1.1.png) (OpenGarage Project for Blynk App). If you have just created a new Blynk account you will have enough energy credits to use the project in the app for free. If you already have other project(s) in your Blynk account, you may need to purchase further energy credits to use the OpenGarage project in the app.  
+- Once the project is scanned, go to the Project Settings, and copy or email the Blynk authorisation token to yourself. This is the token you will need to put into the auth.h file in step 3 below.
+-You can configure the project in the app, such as changing the name of the button, but DO NOT change the virtual pin numbers for any button or widget (V1, V2 etc).  
 
-
+*NOTE: You can logon to the same Blynk account on more than one phone. If you do this on other family members phones, they can use the same project in the app to control the same GarDoor-Car. 
 
 #### 3. Load the sketch in the Arduino IDE and modify the user parameters in auth.h
 
-GarDoor-Car's configuration parameters are found in auth.h. After loading GarDoor-Car-Vx.xx.ino, select the auth.h tab in the Arduino IDE. This section describes the configuration parameters and their permitted values.
+Download the files from this repo to your computer, and open the GarDoor-Car-Vx.xx.ino file from the folder. GarDoor-Car's configuration parameters are found in auth.h. Select the auth.h tab in the Arduino IDE. This section describes the configuration parameters and their permitted values.
 
 *IMPORTANT: No modification of the sketch code in GarDoor-Car-Vx.xx.ino is necessary (or advised, unless you are confident you know what you are doing and are prepared for things to break unexpectedly).*
 
@@ -243,45 +247,48 @@ ULTRASONIC_MAX_DISTANCE number-in-cm
 
 Maximum distance (in cm) to ping. If using HC-SR04P sensors should be 400. If using HC-SR04 sensors, should be 450. Must be a number. (Default: 400)  
 
-ULTRASONIC_DIST_MAX_CLOSE
+ULTRASONIC_DIST_MAX_CLOSE number-in-cm
 
 Maximum distance (in cm) to indicate that the garage door is closed (used by sensor 1). If the measured distance to the object is less than this, then the door is published as closed.If the measured distance to the object is more than this, then the door is published as open. Must be a number. (Default: 120)   
 
-ULTRASONIC_DIST_MAX_CAR
+ULTRASONIC_DIST_MAX_CAR number-in-cm
 
 Maximum distance (in cm) to indicate that the car is present (used by sensor 2). If the measured distance to the object is less than this, then the car is present. If the measured distance to the object is more than this, then the car is absent. Must be a number. (Default: 120)   
 
-ULTRASONIC_SETTLE_TIMEOUT
+ULTRASONIC_SETTLE_TIMEOUT milliseconds 
 
+Number of milliseconds (1000 per second) to wait between pings (as both sensors get triggered at the same time). Waiting between pings improves readings for each sensor. Must be a number. (Default: 500)
 
+RELAY_ACTIVE_TIMEOUT milliseconds
 
-
-RELAY_ACTIVE_TIMEOUT
-
-
-
+Number of milliseconds (1000 per second) the relay will close to actuate the door opener.  While it is "closed" the NO connector on the relay will allow current to flow, while the NC connector will cut the flow of current. Must be a number. (Default: 500)
 
 RELAY_ACTIVE_TYPE HIGH
 
 Set to LOW if using an active-low relay module. Set to HIGH if using an active-high relay module. (Default: HIGH)
 
-DOOR_TRIG_PIN
+DOOR_TRIG_PIN 8266_pin_identifier
 
-
+The ESP8266 GPIO pin that triggers the two ultrasonic sensors to determine the distance to an object and output the results on their Echo pins. Must be a number. (Default: 14)  (which is D5 on the NodeMCU)
 
 **Door 1 Parameters**
 
-DOOR1_ALIAS "Door 1"
+DOOR1_ALIAS "name"
 
-The alias to be used for Door 1 in serial messages. Must be placed within quotation marks. (Default: Door 1)
+The alias to be used for Door 1 (garage door) in serial messages, MQTT topic and webpage. Must be placed within quotation marks. (Default: Door)
 
-MQTT_DOOR1_ACTION_TOPIC "garage/door/1/action"
+MQTT_DOOR1_ACTION_TOPIC WIFI_HOSTNAME "mqtt-topic"
 
-The topic GarHAge will subscribe to for action commands for Door 1. Must be placed within quotation marks. (Default: garage/door/1/action)
+The MQTT broker topic GarDoor-Car will subscribe to for action commands for Door 1 (garage door). Must be placed within quotation marks. (Default: /1/action)
 
-MQTT_DOOR1_STATUS_TOPIC "garage/door/1/status"
+MQTT_DOOR1_STATUS_TOPIC WIFI_HOSTNAME "mqtt-topic"
 
-The topic GarHAge will publish Door 1's status to. Must be placed within quotation marks. (Default: garage/door/1/status)
+The Mqtt broker topic GarDoor-Car will publish Door 1's (garage door) status to. Must be placed within quotation marks. (Default: /1/status)
+
+
+
+
+
 
 DOOR1_OPEN_PIN D2
 
@@ -364,11 +371,18 @@ Subscribing to garage/door/2/action...
 Door 1 closed! Publishing to garage/door/1/status...
 Door 2 closed! Publishing to garage/door/2/status...
 
-If you receive these (or similar) messages, all appears to be working correctly. Disconnect GarHAge from your computer and prepare to install in your garage.
+If you receive these (or similar) messages, all appears to be working correctly. 
 
-#### 6. Reserve an IPv4 address on your DHCP service
+#### 6. Check Blynk App
 
-Logon onto your router (or device/server) that runs your DHCP service. Reserve the IP address of the GarDoor-Car device (also known as a DHCP static binding). This ensures that GarDoor-Car always uses the same IP address when it reboots. This makes it easier to open the webpage or upload a new sketch using Arduino OTA.     
+Make sure the Blynk project is running (in the project there is a triangle-shaped Run button). You should get a distance reading in the app and be able to click the button to activate the relay. 
+
+#### 7. Reserve an IPv4 address on your DHCP service
+
+Logon onto your router (or device/server) that runs your DHCP service. Reserve the IP address of the GarDoor-Car device (also known as a DHCP static binding). This ensures that GarDoor-Car always uses the same IP address when it reboots. This makes it easier to open the webpage or upload a new sketch using Arduino OTA.  
+
+Disconnect GarHAge from your computer and prepare to install in your garage.
+
 
 #### OTA Uploading
 This code also supports remote uploading to the ESP8266 using Arduino's OTA library. To utilize this, you'll need to first upload the sketch using the traditional USB method. However, if you need to update your code after that, your WIFI-connected ESP chip should show up as an option under Tools -> Port -> 'HostName'at your.ip.address.xxx. 
