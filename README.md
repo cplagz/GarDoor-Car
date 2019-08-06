@@ -35,7 +35,7 @@ When the OPEN payload is received on this topic, GarDoor-Car momentarily activat
 
 When the CLOSE payload is received on this topic, GarDoor-Car momentarily activates the relay connected to the garage door opener to cause the door to close. By default, GarDoor-Car is configured to activate the same relay for the OPEN and CLOSE payloads, as most (if not all) garage door openers operate manually by momentarily closing the same circuit to both open and close.
 
-When the STATE payload is received on this topic, GarDoor-Car publishes the status of the garage door (open or closed) to the topic gardoor/1/status and the occupied status of the car (true or false) to the topic gardoor/2/status. The distance measurements for the door and car sensors are also included in these messages. These messages are published with the "retain" flag set. (Note: To address a current issue in Home Assistant that may result in MQTT platforms not showing the correct garage door and car status after a HA restart, it is recommended that you create an automation in Home Assistant that publishes the STATE payload on HA start. An example is provided in the Configuring Home Assistant section of this documentation.)
+When the STATE payload is received on this topic, GarDoor-Car publishes the status of the garage door (open or closed) to the topic gardoor/1/status and the occupied status of the car (true or false) to the topic gardoor/2/status. The distance measurements for the door and car sensors are also included in these messages. These messages are published with the "retain" flag set. (Note: To address a current issue in Home Assistant that may result in MQTT platforms not showing the correct garage door and car status after a HA restart, it is recommended that you create an automation in Home Assistant that publishes the STATE payload on HA start. An example is provided in the Home Assistant Configuration section of this documentation.)
 
 When the state of the garage door changes (either because GarDoor-Car (via HA/MQTT or Blynk app) has triggered the door to open or close, or because the door has been opened or closed via a remote, pushbutton switch, key switch, or manually), GarDoor-Car publishes the status (open or closed) and sensor distance measurement of the garage door to gardoor/door/1/status. These messages are published with the "retain" flag set.
 
@@ -55,7 +55,7 @@ GarDoor-Car can also connect (if enabled by the user) to a Blynk server. This en
 - [5V 1 Channel Relay Board](https://www.gearbest.com/relays/pp_226384.html) Active-High or Active-Low supported
 - [DHT22 module](https://www.aliexpress.com/item/32899808141.html) (optional)  
 - Electrical cable (two-conductor) to connect the relay to your garage door control panel 
-- Power source for NodeMCU: MicroUSB cable or 5V power supply  
+- Power source for NodeMCU: MicroUSB cable with USB 2.1A power adapter or 5V power supply  
 - Male-to-female (and Male-to-male if you use HC-SR04 model ultrasonic sensors and need to connect four components to 5v power using the breadboard power rails) breadboard jumper wires (Dupont)
 - Breadboard 400 tie-point or larger
 - Project box or case (optional)
@@ -82,8 +82,8 @@ GarDoor-Car will work with either the HC-SR04 or HC-SR04P model. The HC-SR04P ca
 
 While a HC-SR04P works using 3.3v power without any other changes to the design (see the wiring diagram below), if using HC-SR04 sensors (which require you to connect them to the 5v VCC for power), a 1k Ω resistor will need to be used between the ECHO pin on each distance sensor and the related input pin on the NodeMCU. 
 
-#### 4. 5v MicroUSB power supply
-Power your NodeMCU via the same type of power supply used to charge Android phones or power a RaspberryPi. Powering the NodeMCU via MicroUSB is recommended since the relay module & DHT22 sensor can be powered via the NodeMCU VIN (or VU on the LoLin v3 variant) pin.
+#### 4. 5v MicroUSB cable and power supply
+Power your NodeMCU via the same type of power supply used to charge Android phones or power a RaspberryPi. Powering the NodeMCU via MicroUSB cable and power adapter is recommended since the relay module & DHT22 sensor can be powered via the NodeMCU VIN (or VU on the LoLin v3 variant) pin. A USB power adapter with 2.1A or above is recommended. 
 
 #### 5. Solderless breadboard (400 tie-point or larger)
 The NodeMCU may be mounted in the center of this breadboard nicely, leaving a female port next to each NodeMCU pin on both sides. However for this project it is important that the two ultrasonic sensors use the same trigger pin, and the relay and DHT22 sensor both use the 5v VIN power pin. 
@@ -107,7 +107,7 @@ To install GarDoor-Car, you will also require:
 - You will also require male-to-male jumper wires to use the outside power rails (4 wires) and to connect both ultrasonic sensors trig pins to the same NodeMCU pin (1 wire). If you choose to insert the DHT22 or relay's pins vertically on the breadboard, you will need further male-to-male jumper wires (up to 6 wires) instead of male-to-female wires.   
 - A project box to hold the NodeMCU, the relay module, the DHT22 sensor module (if required), and the two ultrasonic sensors. While the ultrasonic sensors can be mounted inside the same box as the nodeMCU, they will need to have unobstructed access outside the box to point at the garage door and car.  
 
-#### Building GarDoor-Car
+### Building GarDoor-Car
 
 See the wiring diagram below for an example of how the pins are wired up. 
 
@@ -136,7 +136,7 @@ See the wiring diagram below for an example of how the pins are wired up.
 - Plug a f-to-m jumper wire from Trig on the HC-SR04P sensor 2 module to a port on the same line as the other end of the wire connected to D5 of the NodeMCU is plugged into.
 - Plug a f-to-m jumper wire from Echo on the HC-SR04P sensor 2 module to D1 port on the NodeMCU (or Arduino/ESP8266 GPI05).
 
-Done!
+*Done!*
 
 #### Wiring Diagram
 ![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/master/Wiring%20Diagram-RollerDoor.png?raw=true "Wiring Diagram")
@@ -179,7 +179,7 @@ If you wish to get up and running easily, these are the only settings you need t
 - ULTRASONIC_DIST_MAX_CAR
 - RELAY_ACTIVE_TYPE
 - DHT_ENABLED (if using a DHT22)
-- DHT_TEMPERATURE_CELSIUS (if using a DHT22 and you use fahrenheit)
+- DHT_TEMPERATURE_CELSIUS (if using a DHT22 and you wish to use the fahrenheit scale)
 
 Important!! After making any desired changes save the auth.h file. 
 
@@ -339,30 +339,53 @@ The ESP8266 GPIO pin that receives the echo pin output of sensor 2 to measure th
 
 **DHT Parameters**
 
-
-
 DHT_ENABLED true
-DHT_PIN 13 // D7 on ESP8266
-DHT_TYPE DHT22 // or: DHT21 or DHT22
-MQTT_TEMPERATURE_TOPIC WIFI_HOSTNAME "/temperature"
-MQTT_HUMIDITY_TOPIC WIFI_HOSTNAME "/humidity"
-DHT_PUBLISH_INTERVAL 300  // Number of seconds between each temperature/humidity reading and publish to MQTT 
-DHT_TEMPERATURE_CELSIUS true  //Use celsius (true) or fahrenheit (false)
-DHT_TEMPERATURE_ALIAS "Garage Temperature"  
-DHT_HUMIDITY_ALIAS "Garage Humidity"
- 
 
+Set to true if you include a DHT sensor in your hardware. Set to false to disable the use of a DHT sensor. (Default: true)
+
+DHT_PIN 13 // D7 on ESP8266
+
+The ESP8266 GPIO pin that receives the output of the DHT sensor to measure temperature and humidity. Must be a number. (Default: 13) (which is D7 on the NodeMCU)
+
+DHT_TYPE DHT22 
+
+Set to DHT22 (for DHT22 / AM2302 / AM2321) or DHT21 (for DHT21 / AM2301) or DHT11 depending on the type of sensor you use. (Default: DHT22)
+
+MQTT_TEMPERATURE_TOPIC WIFI_HOSTNAME "mqtt-topic"
+
+The Mqtt broker topic GarDoor-Car will publish the DHT temperature readings to. Must be placed within quotation marks. (Default: /temperature)
+
+MQTT_HUMIDITY_TOPIC WIFI_HOSTNAME "mqtt-topic"
+
+The Mqtt broker topic GarDoor-Car will publish the DHT humidity readings to. Must be placed within quotation marks. (Default: /humidity)
+
+DHT_PUBLISH_INTERVAL seconds 
+
+Number of seconds between between each temperature/humidity reading that will be taken and published using MQTT. Must be a number. (Default: 300)
+
+DHT_TEMPERATURE_CELSIUS true
+
+Set to true if you wish temperature to be reported using celsius scale, or false to report temperature using fahrenheit scale. (Default: true)
+
+DHT_TEMPERATURE_ALIAS "name"  
+
+The alias to be used for the temperature output in serial messages, MQTT topic and webpage. Must be placed within quotation marks. (Default: Garage Temperature)
+
+DHT_HUMIDITY_ALIAS "name"
  
-  
+The alias to be used for the humidity output in serial messages, MQTT topic and webpage. Must be placed within quotation marks. (Default: Garage Humidity)
+
 
 #### 4. Upload the sketch to your NodeMCU / microcontroller
 
 Ensure that the Auduino IDE is running and the sketch is loaded and configured. If using the NodeMCU, connect it to your computer via MicroUSB. The NodeMCU will connect to a virtual COM port within the Auduino IDE.   
 
--TO DO: List settings for Generic ESP8266 Module board before uploading. 
+Configure the Arduino IDE for the upload using the settings shown in the figure below:  
+
+![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/arduino-settings.png?raw=true "Arduino IDE Settings")
 
 There are two uploads methods you can use:
-- xxx (to add)
+- In the Arduino IDE, Tools - Ports menu ensure that the COM port is selected that the NodeMCU is connected to. Also ensure you have configured the settings for the Generic ESP8266 Board as shown in the figure above. Then select Sketch - Upload. 
 - Press and hold the reset button on the NodeMCU, press and hold the Flash button on the NodeMCU, then release the Reset button. Select Sketch - Upload in the Arduino IDE.
 
 If using a different ESP8266 microcontroller, follow that device's instructions for putting it into flashing/programming mode.
@@ -394,16 +417,32 @@ Logon onto your router (or device/server) that runs your DHCP service. Reserve t
 
 Disconnect GarDoor-Car from your computer and prepare to install it in your garage.
 
+### Installing GarDoor-Car in your Garage
 
+- Mount GarDoor-Car in your garage (above the garage floor or on a wall).
+- Point Sensor 1 at the garage door and secure the position of the sensor.
+- Point Sensor 2 at the normal location of the car in the garage and secure the position of the sensor. 
+- Connect two-conductor voltage wire to the NO (or NC if that suits your opener) and COMMON terminals of your relay module;          run the wire to the garage door opener for the door and connect to the opener's terminals (the same terminals that the pushbutton or key switch for your door is attached to).
+- Plug the MicroUSB cable into a USB power supply (2.1A or above). 
 
+*Done!*
+    
+### Home Assistant Configuration 
 
-#### OTA Uploading
-This code also supports remote uploading to the ESP8266 using Arduino's OTA library. To utilize this, you'll need to first upload the sketch using the traditional USB method. However, if you need to update your code after that, your WIFI-connected ESP chip should show up as an option under Tools -> Port -> 'HostName'at your.ip.address.xxx. 
+GarDoor-Car supports Home Assistant's "MQTT Cover", "MQTT Binary Sensor", and "MQTT Sensor" platforms.
 
-More information on OTA uploading can be found [here](http://esp8266.github.io/Arduino/versions/2.0.0/doc/ota_updates/ota_updates.html). 
+HA configuration examples are shown in the yaml file in this repo (click the link below). 
 
+[YAML Configuration](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/Example%20Home%20Assistant%20Configuration.yaml)
 
-#### Web page examples
+![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/HA-entities1.png?raw=true "HA Example")
+
+![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/HA-entities2.png?raw=true "HA Example")
+
+### Web page Examples
+
+In a browser, enter the IP address w.x.y.z of the GarDoor-Car in the address bar. You can monitor the garage door, car, temperature, humidity and view some of the settings (see the figures below). 
+
 ![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/webpagestatus1.png?raw=true "Webpage Status")
 
 ![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/webpagestatus2.png?raw=true "Webpage Status")
@@ -414,14 +453,11 @@ More information on OTA uploading can be found [here](http://esp8266.github.io/A
 
 ![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/webpagestatus5.png?raw=true "Webpage Status")
 
-#### Example Home Assistant Configuration 
+### Blynk App
 
-[YAML Configuration](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/Example%20Home%20Assistant%20Configuration.yaml)
+On your smartphone run the Blynk app and click the triangle-shaped Run button to make sure the Blynk project is running. You can now monitor the status of the door / car and open/close your garage door. 
 
-![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/HA-entities1.png?raw=true "HA Example")
-
-![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/HA-entities2.png?raw=true "HA Example")
-
+![](https://community.blynk.cc/uploads/default/original/2X/c/c3313591520198323d736bb8b994f1150ffc2d26.jpg)
 
 #### Sample MQTT commands
 
@@ -431,3 +467,7 @@ Listen to MQTT commands
 Open the garage door
 > mosquitto_pub -h 172.17.0.1 -t GarDoor/1/action -m "OPEN"
 
+#### OTA Uploading
+This code also supports remote uploading to the ESP8266 using Arduino's OTA library. To utilise this, you'll need to first upload the sketch using the traditional USB method. However, if you need to update your code after that, your WIFI-connected ESP chip should show up in Arduino IDE as an option under Tools -> Port -> 'HostName'at your.ip.address.xxx. 
+
+More information on OTA uploading can be found [here](http://esp8266.github.io/Arduino/versions/2.0.0/doc/ota_updates/ota_updates.html). 
