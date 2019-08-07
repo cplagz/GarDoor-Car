@@ -10,7 +10,7 @@ GarDoor can also be used with the Blynk app (iOS or Android). If you enable this
 
 GarDoor requires both hardware and software components. It requires an ESP8266 microcontroller with sensors and a relay. If you select the appropriate parts, you can build a GarDoor-Car device with no soldering! The software component is found in this repo. 
 
-The code is based on DotNetDann's ESP-MQTT-GarageDoorSensor project (which took inspiration from GarHAge and OpenGarage) with added additional features. 
+The code is based on DotNetDann's ESP-MQTT-GarageDoorSensor project (thanks Daniel) (which took inspiration from GarHAge and OpenGarage) with added additional features. Parts of the documentation is based on GarHAge documentation (thanks Mark).   
 
 ### Supported Features Include
 - Reports status of the garage door
