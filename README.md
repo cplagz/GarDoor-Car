@@ -141,6 +141,9 @@ See the wiring diagram below for an example of how the pins are wired up.
 #### Wiring Diagram
 ![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/master/Wiring%20Diagram-RollerDoor.png?raw=true "Wiring Diagram")
 
+![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/GarDoor-Carv2.00_breadboard.png?raw=true "Breadboard Diagram")
+
+
 ### Software
 
 #### 1. Set up the Arduino IDE
