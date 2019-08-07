@@ -134,3 +134,14 @@ automation:
         data:
           topic: GarDoor/1/action
           payload: "STATE"
+   
+  - alias: 'Close garage door if open for longer than 30 minutes'
+    trigger:
+      - platform: state
+        entity_id: cover.garage_door
+        to: "open"
+        for:
+         minutes: 30
+    action:
+      - service: cover.close_cover
+        entity_id: cover.garage_door
