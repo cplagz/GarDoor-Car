@@ -394,6 +394,7 @@ If using a different ESP8266 microcontroller, follow that device's instructions 
 
 Open the Serial Monitor via Tools - Serial Monitor. Reset your microcontroller. If all is working correctly, you should see something similar to the following messages:
 
+```
 Starting GarDoor-Car...
 
 Connecting to your-wifi-ssid.. WiFi connected - IP address: 192.168.1.100
@@ -404,6 +405,7 @@ Publishing message "blynkon" to GarDoor/blynkavailability...
 Subscribing to GarDoor/1/action...
 Door closed! Publishing to GarDoor/1/status...
 Car Absent! Publishing to GarDoor/2/status...
+```
 
 If you receive these (or similar) messages, all appears to be working correctly. 
 
@@ -441,6 +443,18 @@ HA configuration examples are shown in the yaml file in this repo (click the lin
 
 A status update from GarDoor-Car can be triggered by pressing the stop button (shown in the figure above) for the door in the HA GUI. 
 
+### Blynk App
+
+If you enabled Blynk, on your smartphone run the Blynk app and click the triangle-shaped Run button to make sure the Blynk project is running. You can now monitor the status of the door/car and open/close your garage door. If you left Blynk notifications enabled in the auth.h file, you will receive notifications when the garage door is opened or closed, and every 15 minutes when the door is left open.   
+
+![](https://community.blynk.cc/uploads/default/original/2X/c/c3313591520198323d736bb8b994f1150ffc2d26.jpg)
+
+### Ariela App Notifications
+
+If you use the Ariela App, you can configure HA to send notifications about the garage door to the app. Click the link below to learn how to set this up. 
+
+[Ariela Push Notifications](http://ariela.surodev.com/2019/05/08/push-notifications-2/)
+
 ### Web page Examples
 
 In a browser, enter the IP address w.x.y.z of the GarDoor-Car in the address bar. You can monitor the garage door, car, temperature, humidity and view some of the settings (see the figures below). 
@@ -455,12 +469,6 @@ In a browser, enter the IP address w.x.y.z of the GarDoor-Car in the address bar
 
 ![alt text](https://github.com/SmbKiwi/GarDoor-Car/blob/v2.00R/webpagestatus5.png?raw=true "Webpage Status")
 
-### Blynk App
-
-On your smartphone run the Blynk app and click the triangle-shaped Run button to make sure the Blynk project is running. You can now monitor the status of the door / car and open/close your garage door. 
-
-![](https://community.blynk.cc/uploads/default/original/2X/c/c3313591520198323d736bb8b994f1150ffc2d26.jpg)
-
 #### Sample MQTT commands
 
 Listen to MQTT commands
@@ -470,6 +478,7 @@ Open the garage door
 > mosquitto_pub -h 172.17.0.1 -t GarDoor/1/action -m "OPEN"
 
 #### OTA Uploading
+
 This code also supports remote uploading to the ESP8266 using Arduino's OTA library. To utilise this, you'll need to first upload the sketch using the traditional USB method. However, if you need to update your code after that, your WIFI-connected ESP chip should show up in Arduino IDE as an option under Tools -> Port -> 'HostName'at your.ip.address.xxx. 
 
 More information on OTA uploading can be found [here](http://esp8266.github.io/Arduino/versions/2.0.0/doc/ota_updates/ota_updates.html). 
