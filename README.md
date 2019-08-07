@@ -70,7 +70,7 @@ I recommend the NodeMCU as GarDoor-Car was developed and is tested on it. Its ad
 - it can be powered and programmed via MicroUSB;
 - it has Reset and Flash buttons, making programming easy.
 
-Accordingly, this guide is written with the NodeMCU in mind. But, GarDoor-Car should also work with the Adafruit HUZZAH, Wemos D1, or similar, though you may need to adjust the GPIO ports used by the sketch to match the ESP8266 ports that your microcontroller makes available.
+This guide is written specifically for the NodeMCU. But, GarDoor-Car should also work with the Adafruit HUZZAH, Wemos D1, or similar, though you may need to adjust the GPIO ports used by the sketch to match the ESP8266 ports that your microcontroller makes available.
 
 #### 2. Single 5v relay module
 A single 5v relay module makes setup easy: just plug jumper wires from the module's VCC, S, and GND pins to the NodeMCU. Because the relay module is powered by 5v, its inputs can be triggered by the NodeMCU's GPIOs.
@@ -427,7 +427,7 @@ Disconnect GarDoor-Car from your computer and prepare to install it in your gara
 - Mount GarDoor-Car in your garage (above the garage floor or on a wall).
 - Point Sensor 1 at the garage door and secure the position of the sensor.
 - Point Sensor 2 at the normal location of the car in the garage and secure the position of the sensor. 
-- Connect two-conductor voltage wire to the NO (or NC if that suits your opener) and COMMON terminals of your relay module;          run the wire to the garage door opener for the door and connect to the opener's terminals (the same terminals that the pushbutton or key switch for your door is attached to).
+- Connect two-conductor voltage wire to the NO (or NC if that suits your opener) and COMMON terminals of your relay module;          run the wire to the garage door opener for the door and connect to the opener's terminals (the same terminals that the pushbutton or key switch for your door is attached to). Two of the opener's terminals connected to a wall switch or key switch or pushbutton are the ones you need to connect the relay to. You can determine which ones they are, by using a single wire and shorting two of the terminals at a time until the door opens/closes. Once you have identified the two terminals you need to connect to, connect a wire to each one. The other end of one of the wires goes to the COMMON terminal on the relay, and the other end of the second wire connects to the NO (normally open) terminal.
 - Plug the MicroUSB cable into a USB power supply (2.1A or above). 
 
 *Done!*
