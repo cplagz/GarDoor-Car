@@ -4,7 +4,7 @@ Version: 2.00R
 ## ESP8266 MQTT Garage Door Opener, Garage Door and Car Sensor, and Temperature Monitor using Home Assistant/Blynk
 This project allows you to control (open/close) a "dumb" garage door opener for a garage door and independently reports the garage door status (open/closed) and presence of a car in the garage via MQTT and Blynk. In addition you can monitor the Temperature and Humidity within your garage over MQTT as well. This project requires two ultrasonic sensors: one pointed at the garage door, and the other pointed at the normal location of the car. This allows the presence of the car to be detected whether the garage door is open or closed.  
 
-The code covered in this repository utilises Home Assistant's [MQTT Cover Component](https://www.home-assistant.io/components/cover.mqtt/) and [MQTT Binary Sensor Component](https://www.home-assistant.io/components/binary_sensor.mqtt/). There is a sample configuration in the repository. GarDoor will respond to HA's open and close commands and reports door/car status to keep HA's GUI in sync with the door and car state. GarDoor should also be controllable via any home automation software that can work with MQTT.  
+The code covered in this repository utilises Home Assistant's [MQTT Cover Component](https://www.home-assistant.io/components/cover.mqtt/), [MQTT Binary Sensor Component](https://www.home-assistant.io/components/binary_sensor.mqtt/), and [MQTT Sensor Component](https://www.home-assistant.io/components/sensor.mqtt/). There is an example configuration in this repository. GarDoor will respond to HA's open and close commands and reports door/car status to keep HA's GUI in sync with the door and car state. GarDoor should also be controllable via any home automation software that can work with MQTT.  
 
 GarDoor can also be used with the Blynk app (iOS or Android). If you enable this feature, you can monitor the garage door/car status as well as open/close the door with the app. You can also choose to be notified of garage door events on your phone. 
 
@@ -14,11 +14,11 @@ The code is based on DotNetDann's ESP-MQTT-GarageDoorSensor project (which took 
 
 ### Supported Features Include
 - Reports status of the garage door
-- Reports presence of a car in the garage whether the door is open or not
+- Reports presence of a car in the garage whether the door is open or closed
 - Reports ultrasonic sensors distance readings
 - Reports information about the ESP8266
-- Reports information on Temperature and Humidity
-- Ability to select Celius or Fahrenheit for Temperature
+- Reports information on temperature and humidity
+- Ability to select Celius or Fahrenheit for temperature
 - Web page for status of the garage door, car presence, and temperature/humidity
 - Ability to use the Blynk App (iOS or Android) to open/close the garage door and monitor door/car status
 - Ability to receive Blynk notifications when garage door is opened/closed and when door is left open for more than 15 minutes
@@ -54,9 +54,9 @@ GarDoor-Car can also connect (if enabled by the user) to a Blynk server. This en
 - [2 x HC-SR04P Ultrasonic Sensors](https://www.aliexpress.com/item/32711959780.html) May also use HC-SR04 model
 - [5V 1 Channel Relay Board](https://www.gearbest.com/relays/pp_226384.html) Active-High or Active-Low supported
 - [DHT22 module](https://www.aliexpress.com/item/32899808141.html) (optional)  
-- Electrical cable (two-conductor) to connect the relay to your garage door control panel 
+- Electrical cable (two-conductor) to connect the relay to your garage door opener 
 - Power source for NodeMCU: MicroUSB cable with USB 2.1A power adapter or 5V power supply  
-- Male-to-female (and Male-to-male if you use HC-SR04 model ultrasonic sensors and need to connect four components to 5v power using the breadboard power rails) breadboard jumper wires (Dupont)
+- Male-to-female (and male-to-male if you use HC-SR04 model ultrasonic sensors and need to connect four components to 5v power using the breadboard power rails) breadboard jumper wires (Dupont)
 - Breadboard 400 tie-point or larger
 - Project box or case (optional)
 
