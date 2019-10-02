@@ -16,6 +16,8 @@ The code is based on DotNetDann's ESP-MQTT-GarageDoorSensor project (thanks Dani
 - Reports status of the garage door
 - Reports presence of a car in the garage whether the door is open or closed
 - Reports ultrasonic sensors distance readings
+- Reports door is open / car is absent if distance reading is 0 (because wave has not been received back by sensors)
+- Automatically resets echo pin(s) if distance is 0 to support ultrasonic sensors that do not timeout where no wave is received
 - Reports information about the ESP8266
 - Reports information on temperature and humidity
 - Ability to select Celius or Fahrenheit for temperature
